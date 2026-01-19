@@ -1,9 +1,13 @@
-import type { Metadata } from 'next'
 import './globals.css'
+import { Inter } from 'next/font/google'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 
-export const metadata: Metadata = {
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
     title: 'DSA Dashboard',
-    description: 'DSA Notes & Links Dashboard',
+    description: 'Track your Data Structures and Algorithms progress',
 }
 
 export default function RootLayout({
@@ -13,7 +17,13 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body className={inter.className}>
+                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Navbar />
+                    <main style={{ flex: 1 }}>{children}</main>
+                    <Footer />
+                </div>
+            </body>
         </html>
     )
 }
