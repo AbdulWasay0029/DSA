@@ -28,8 +28,8 @@ export default function LinksPage() {
                                 >
                                     <div className={styles.linkInfo}>
                                         <span className={styles.linkTitle}>{link.title}</span>
-                                        <span className={`${styles.badge} ${styles[link.difficulty?.toLowerCase() || 'easy']}`}>
-                                            {link.difficulty}
+                                        <span className={`${styles.badge} ${styles[link.platform?.toLowerCase() || '']}`}>
+                                            {link.platform || 'Link'}
                                         </span>
                                     </div>
                                     <span className={styles.arrow}>↗</span>

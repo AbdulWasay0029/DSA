@@ -109,6 +109,26 @@
     color: #ff5f56;
 }
 
+.smartinterviews {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.leetcode {
+    background: rgba(255, 161, 22, 0.2);
+    color: #ffa116;
+}
+
+.interviewbit {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+}
+
+.codeforces {
+    background: rgba(248, 113, 113, 0.2);
+    color: #f87171;
+}
+
 .arrow {
     color: #666;
     font-size: 1.2rem;
