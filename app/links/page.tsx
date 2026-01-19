@@ -3,7 +3,7 @@ import styles from './page.module.css'
 import { links } from '@/data/links'
 
 export default function LinksPage() {
-    const categories = Array.from(new Set(links.map(l => l.category)))
+    const categories = Array.from(new Set(links.map(l => l.category))).reverse()
 
     return (
         <div className={styles.container}>
