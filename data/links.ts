@@ -459,38 +459,38 @@ export const links: LinkItem[] = [
         platform: 'SmartInterviews'
     },
     {
-        id: '13-01-5',
+        id: '19-01-1',
         title: 'First Repeating Character - 1',
         url: 'https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/first-repeating-character-1',
-        category: '13/01/2026',
+        category: '19/01/2026',
         platform: 'SmartInterviews'
     },
     {
-        id: '13-01-6',
+        id: '19-01-2',
         title: 'First Repeating Character - 2',
         url: 'https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/first-repeating-character-2',
-        category: '13/01/2026',
+        category: '19/01/2026',
         platform: 'SmartInterviews'
     },
     {
-        id: '13-01-7',
+        id: '19-01-3',
         title: 'Check Anagrams',
         url: 'https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/check-anagrams',
-        category: '13/01/2026',
+        category: '19/01/2026',
         platform: 'SmartInterviews'
     },
     {
-        id: '13-01-8',
+        id: '19-01-4',
         title: 'Longest Palindromic Substring',
         url: 'https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/longest-palindromic-substring',
-        category: '13/01/2026',
+        category: '19/01/2026',
         platform: 'SmartInterviews'
     },
     {
-        id: '13-01-9',
+        id: '19-01-5',
         title: 'Enclosing Substring',
         url: 'https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/enclosing-substring',
-        category: '13/01/2026',
+        category: '19/01/2026',
         platform: 'SmartInterviews'
     }
 ];
