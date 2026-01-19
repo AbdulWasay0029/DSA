@@ -13,8 +13,8 @@ export default function Home() {
                 transition={{ duration: 0.8 }}
                 className={styles.hero}
             >
-                <h1 className={styles.title}>DSA Dashboard</h1>
-                <p className={styles.subtitle}>Mastering Data Structures & Algorithms with handwritten precision.</p>
+                <h1 className={styles.title}>SI Batch Hub</h1>
+                <p className={styles.subtitle}>A dedicated workspace for our SmartInterviews college batch to track notes, solve problems, and master DSA together.</p>
             </motion.div>
 
             <motion.div
