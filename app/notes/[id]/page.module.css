@@ -1,0 +1,104 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    min-height: 100vh;
+}
+
+.backLink {
+    color: var(--primary);
+    margin-bottom: 2rem;
+    display: inline-block;
+    font-size: 0.9rem;
+    transition: opacity 0.3s;
+}
+
+.backLink:hover {
+    opacity: 0.8;
+}
+
+.header {
+    margin-bottom: 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 2rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    color: var(--foreground);
+}
+
+.description {
+    color: #ccc;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.solutions {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.solutionBlock {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.solutionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+.codeWindow {
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.codeHeader {
+    background: #252526;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #555;
+}
+
+.dot:nth-child(1) {
+    background: #ff5f56;
+}
+
+.dot:nth-child(2) {
+    background: #ffbd2e;
+}
+
+.dot:nth-child(3) {
+    background: #27c93f;
+}
+
+.lang {
+    margin-left: auto;
+    color: #888;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.codePre {
+    padding: 1.5rem;
+    margin: 0;
+    overflow-x: auto;
+    color: #d4d4d4;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}

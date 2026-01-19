@@ -1,0 +1,67 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    min-height: 100vh;
+}
+
+.header {
+    margin-bottom: 4rem;
+    animation: slideDown 0.8s ease-out;
+}
+
+.backLink {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    transition: color 0.3s;
+}
+
+.backLink:hover {
+    color: var(--foreground);
+}
+
+.title {
+    font-size: 3rem;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(to right, #fff, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    animation: fadeIn 1s ease-out 0.2s backwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
