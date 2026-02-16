@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useSession } from 'next-auth/react';
@@ -36,6 +36,8 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState<Note | null>(null);
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+    const [isCompleted, setIsCompleted] = useState(false);
+    const [completionLoading, setCompletionLoading] = useState(false);
 
     // Fetch Note
     useEffect(() => {
@@ -46,7 +48,6 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                     const allNotes = await res.json();
                     const found = allNotes.find((n: any) => n.id === params.id);
                     if (found) {
-                        // Infer difficulty from tags if not present
                         const diff = found.tags?.find((t: string) => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
                         setNote({ ...found, difficulty: diff });
                         setEditData({ ...found, difficulty: diff });
@@ -60,6 +61,46 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
         };
         fetchNote();
     }, [params.id]);
+
+    // Fetch completion status
+    useEffect(() => {
+        if (!session) return;
+
+        const fetchProgress = async () => {
+            try {
+                const res = await fetch('/api/progress');
+                if (res.ok) {
+                    const data = await res.json();
+                    setIsCompleted(data.completed.includes(params.id));
+                }
+            } catch (e) {
+                console.error('Failed to fetch progress:', e);
+            }
+        };
+        fetchProgress();
+    }, [session, params.id]);
+
+    // Toggle completion
+    const toggleCompletion = async () => {
+        if (!session) return;
+
+        setCompletionLoading(true);
+        try {
+            const res = await fetch('/api/progress', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ noteId: params.id, completed: !isCompleted })
+            });
+
+            if (res.ok) {
+                setIsCompleted(!isCompleted);
+            }
+        } catch (e) {
+            console.error('Failed to update progress:', e);
+        } finally {
+            setCompletionLoading(false);
+        }
+    };
 
     // Handle Save
     const handleSave = async () => {
@@ -108,9 +149,32 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                 {/* --- MAIN CONTENT (Left) --- */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                     <header className={styles.header}>
-                        <span className={`${styles.difficultyBadge} ${styles[data.difficulty || 'Medium']}`}>
-                            {data.difficulty || 'Medium'}
-                        </span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <span className={`${styles.difficultyBadge} ${styles[data.difficulty || 'Medium']}`}>
+                                {data.difficulty || 'Medium'}
+                            </span>
+
+                            {session && (
+                                <button
+                                    onClick={toggleCompletion}
+                                    disabled={completionLoading}
+                                    style={{
+                                        background: isCompleted ? 'var(--primary)' : 'rgba(255,255,255,0.1)',
+                                        border: '1px solid rgba(255,255,255,0.2)',
+                                        color: '#fff',
+                                        padding: '0.5rem 1rem',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        fontSize: '0.9rem'
+                                    }}
+                                >
+                                    {isCompleted ? '✓ Completed' : 'Mark Complete'}
+                                </button>
+                            )}
+                        </div>
 
                         {isEditing ? (
                             <input
