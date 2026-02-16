@@ -4,98 +4,141 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 2rem;
-    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #06060c 100%);
+    padding: 4rem 2rem;
+    background: radial-gradient(circle at 50% -20%, #1a1a2e 0%, #030305 100%);
     overflow: hidden;
+    position: relative;
+}
+
+.bgGlow {
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(138, 63, 252, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .hero {
     text-align: center;
-    margin-bottom: 5rem;
+    margin-bottom: 6rem;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.badge {
+    background: rgba(138, 63, 252, 0.1);
+    color: var(--primary);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(138, 63, 252, 0.2);
 }
 
 .title {
-    font-size: 5rem;
+    font-size: 4.5rem;
     font-weight: 800;
     margin: 0;
+    line-height: 1.1;
     letter-spacing: -2px;
-    background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.title span {
+    background: linear-gradient(135deg, #A770EF 0%, #CF8BF3 50%, #FDB99B 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: fadeIn 1s ease-out;
 }
 
 .subtitle {
-    font-size: 1.25rem;
-    color: #888;
-    max-width: 600px;
-    margin: 1.5rem auto 0;
+    font-size: 1.2rem;
+    color: #94a3b8;
+    max-width: 650px;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+.ctaGroup {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.secondaryCta {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 1rem 2rem;
+    transition: color 0.2s;
+}
+
+.secondaryCta:hover {
+    color: #fff;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
     width: 100%;
-    max-width: 900px;
+    max-width: 1100px;
+    z-index: 1;
 }
 
 .card {
-    position: relative;
-    padding: 3rem 2rem;
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
-    text-align: center;
-    overflow: hidden;
-}
-
-.cardIcon {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
+    padding: 2.5rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, background 0.3s ease;
+    text-align: left;
 }
 
 .card:hover {
-    transform: translateY(-10px);
-    background: rgba(255, 255, 255, 0.06);
-    border-color: #6366f1;
-    box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.2);
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(138, 63, 252, 0.3);
 }
 
-.card h2 {
-    font-size: 2.25rem;
-    margin-bottom: 1rem;
+.cardIcon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin: 0 0 0.8rem 0;
     color: #fff;
 }
 
 .card p {
-    color: #94a3b8;
-    font-size: 1.1rem;
+    color: #8899ac;
+    font-size: 1rem;
     line-height: 1.6;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    margin: 0;
 }
 
 @media (max-width: 768px) {
     .title {
-        font-size: 3.5rem;
+        font-size: 3rem;
+    }
+
+    .hero {
+        margin-bottom: 4rem;
     }
 
     .main {
-        padding: 4rem 1.5rem;
+        padding: 3rem 1.5rem;
     }
 }

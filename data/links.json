@@ -1,0 +1,58 @@
+[
+    {
+        "id": "13-08-1",
+        "title": "Power of 2",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/power-of-2",
+        "category": "13/08/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-08-2",
+        "title": "Binary Representation",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/binary-representation",
+        "category": "13/08/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-08-3",
+        "title": "Count Set Bits",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/count-set-bits",
+        "category": "13/08/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-08-4",
+        "title": "X 1s and Y 0s",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/x-1s-and-y-0s",
+        "category": "13/08/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-08-5",
+        "title": "X and Y Set Bits",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/x-and-y-set-bits",
+        "category": "13/08/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "29-08-1",
+        "title": "SI Sample Codes",
+        "url": "https://smartinterviews.in/samplecodes/",
+        "category": "29/08/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "29-08-2",
+        "title": "SI Primary Contest",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary",
+        "category": "29/08/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "29-08-3",
+        "title": "SI Basic Contest",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-basic/problems",
+        "category": "29/08/2025",
+        "platform": "SmartInterviews"
+    }
+]

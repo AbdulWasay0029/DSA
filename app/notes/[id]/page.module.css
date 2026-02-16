@@ -17,6 +17,17 @@
     opacity: 0.8;
 }
 
+.contributionBanner {
+    background: rgba(39, 201, 63, 0.15);
+    border: 1px solid rgba(39, 201, 63, 0.3);
+    color: #4ade80;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
 .header {
     margin-bottom: 3rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -38,40 +49,79 @@
 .solutions {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 4rem;
+    margin-top: 4rem;
 }
 
 .solutionBlock {
-    animation: fadeIn 0.5s ease-out;
+    /* animation handled by framer-motion */
+}
+
+.solutionHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .solutionTitle {
     font-size: 1.5rem;
-    margin-bottom: 1rem;
     color: var(--primary);
+    margin: 0;
+}
+
+.pseudoBadge {
+    padding: 0.2rem 0.6rem;
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.copyButton {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.copyButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
 }
 
 .codeWindow {
     background: #1e1e1e;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.codeHeader {
+.codeBar {
     background: #252526;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    border-bottom: 1px solid #333;
+}
+
+.dots {
+    display: flex;
+    gap: 6px;
 }
 
 .dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #555;
 }
 
 .dot:nth-child(1) {
@@ -88,17 +138,284 @@
 
 .lang {
     margin-left: auto;
-    color: #888;
+    color: #666;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- New Fancy Sections --- */
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #ddd;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.complexity h3,
+.examplesSection h3,
+.tipsSection h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.complexityGrid {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat span {
     font-size: 0.8rem;
+    color: #888;
     text-transform: uppercase;
 }
 
-.codePre {
-    padding: 1.5rem;
+.stat strong {
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.analysis {
+    font-size: 0.95rem;
+    color: #aaa;
     margin: 0;
-    overflow-x: auto;
-    color: #d4d4d4;
-    font-family: 'Fira Code', 'Consolas', monospace;
+    font-style: italic;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+.examplesSection {
+    grid-column: 1 / -1;
+}
+
+.examplesList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.exampleCard {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary);
+}
+
+.exInput,
+.exOutput {
+    font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
-    line-height: 1.5;
+    margin-bottom: 0.5rem;
+    color: #ddd;
+}
+
+.exInput strong,
+.exOutput strong {
+    color: #777;
+}
+
+.exExplain {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.tipsSection {
+    grid-column: 1 / -1;
+    background: rgba(252, 211, 77, 0.05);
+    /* Yellow tint */
+    border: 1px solid rgba(252, 211, 77, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.tipsSection ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.tipsSection li {
+    margin-bottom: 0.5rem;
+    color: #ddd;
+    line-height: 1.6;
+}
+
+.tipsSection li::marker {
+    color: #fcd34d;
+    /* Yellow marker */
+}
+
+/* Inputs for Edit Mode */
+.input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    outline: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.input:focus {
+    border-bottom-color: var(--primary);
+}
+
+.headerInput {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: inherit;
+    font-family: inherit;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    padding: 1rem;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 150px;
+    outline: none;
+}
+
+.textarea:focus {
+    border-color: var(--primary);
+}
+
+.codeEditor {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    min-height: 300px;
+    background: #151515;
+}
+
+.editControls {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 100;
+}
+
+.saveBtn,
+.cancelBtn,
+.editBtn {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+.saveBtn {
+    background: #fff;
+    color: #000;
+}
+
+.cancelBtn {
+    background: #333;
+    color: #fff;
+}
+
+.editBtn {
+    background: #fff;
+    color: #000;
+}
+
+.saveBtn:hover,
+.cancelBtn:hover,
+.editBtn:hover {
+    transform: translateY(-2px);
+}
+
+.smallInput {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #333;
+    color: #fff;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.smallInput:focus {
+    border-color: #fff;
+    outline: none;
+}
+
+.deleteBtn {
+    background: #400;
+    color: #fcc;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.addBtn {
+    background: #222;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-size: 0.9rem;
 }

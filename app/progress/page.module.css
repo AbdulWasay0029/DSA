@@ -1,0 +1,145 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    min-height: 100vh;
+}
+
+.header {
+    margin-bottom: 3rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 0.5rem 0;
+    color: #fff;
+}
+
+.header p {
+    color: #888;
+    font-size: 1.1rem;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.statCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.statIcon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.statInfo h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.statInfo span {
+    color: #888;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.section {
+    margin-top: 4rem;
+}
+
+.section h3 {
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.progressBar {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #8a3ffc, #4a00e0);
+    border-radius: 6px;
+    transition: width 1s ease-out;
+}
+
+.topicGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.topicCard {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.topicCard:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.topicIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.topicInfo h4 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.topicInfo span {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.arrow {
+    margin-left: auto;
+    color: #444;
+    transition: 0.2s;
+}
+
+.topicCard:hover .arrow {
+    color: #fff;
+    transform: translateX(5px);
+}

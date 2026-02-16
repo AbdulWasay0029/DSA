@@ -1,67 +1,185 @@
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 4rem 2rem;
+    padding: 2rem;
     min-height: 100vh;
 }
 
 .header {
-    margin-bottom: 4rem;
-    animation: slideDown 0.8s ease-out;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid #222;
+    padding-bottom: 2rem;
 }
 
-.backLink {
-    color: #888;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    display: inline-block;
-    transition: color 0.3s;
-}
-
-.backLink:hover {
-    color: var(--foreground);
-}
-
-.title {
-    font-size: 3rem;
-    margin: 0 0 0.5rem 0;
-    background: linear-gradient(to right, #fff, #aaa);
+.titleArea h1 {
+    font-size: 3.5rem;
+    margin: 0;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, #888 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.subtitle {
+.titleArea p {
     color: #666;
+    margin-top: 0.5rem;
     font-size: 1.1rem;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.roleToggle {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 0.4rem;
+    border-radius: 50px;
+    display: flex;
+    position: relative;
+    cursor: pointer;
+}
+
+.roleOption {
+    padding: 0.4rem 1.2rem;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    color: #666;
+    transition: all 0.3s;
+    position: relative;
+    z-index: 1;
+}
+
+.roleOption.active {
+    color: #000;
+    font-weight: 600;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.actionBtn {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.actionBtn:hover {
+    transform: translateY(-2px);
+}
+
+.secondaryBtn {
+    background: transparent;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.secondaryBtn:hover {
+    border-color: #666;
+    background: #111;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
-    animation: fadeIn 1s ease-out 0.2s backwards;
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Review Section */
+.reviewSection {
+    margin-bottom: 4rem;
+    background: rgba(255, 165, 0, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
+.reviewHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.reviewHeader h2 {
+    color: #ffa500;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.suggestionList {
+    display: grid;
+    gap: 1rem;
+}
+
+.suggestionCard {
+    background: #111;
+    border: 1px solid #333;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.suggestionInfo h4 {
+    margin: 0 0 0.3rem 0;
+    color: #eee;
+}
+
+.suggestionInfo p {
+    margin: 0;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.suggestionActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.approveBtn {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.rejectBtn {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.reviewBtn {
+    background: #333;
+    color: #ccc;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
 }

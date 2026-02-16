@@ -7,7 +7,7 @@ export default function Footer() {
                 <p className={styles.text}>&copy; {new Date().getFullYear()} DSA Mastery. Built for excellence.</p>
                 <div className={styles.socials}>
                     <a href="https://github.com/AbdulWasay0029" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>GitHub</a>
-                    <a href="#" className={styles.socialLink}>LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/abdulwasay0029/" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>LinkedIn</a>
                     <a href="#" className={styles.socialLink}>Twitter</a>
                 </div>
             </div>
