@@ -58,6 +58,15 @@ const SuggestionSchema = new Schema({
     submittedAt: { type: Date, default: Date.now }
 });
 
+// --- User Progress Schema ---
+// Tracks user completion since we are using JWT strategy (no User collection by default)
+const UserProgressSchema = new Schema({
+    email: { type: String, required: true, unique: true },
+    completedNotes: { type: [String], default: [] }, // Array of Note IDs
+    lastActive: { type: Date, default: Date.now }
+});
+
 // Prevent overwriting models if they already exist (hot reload issue in dev)
 export const NoteModel = mongoose.models.Note || mongoose.model('Note', NoteSchema);
 export const SuggestionModel = mongoose.models.Suggestion || mongoose.model('Suggestion', SuggestionSchema);
+export const UserProgress = mongoose.models.UserProgress || mongoose.model('UserProgress', UserProgressSchema);
