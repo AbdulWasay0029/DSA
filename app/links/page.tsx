@@ -79,12 +79,25 @@ export default function LinksPage() {
     // --- Admin Handlers ---
     const handleDelete = async (id: string) => {
         if (!confirm('Delete this resource?')) return;
-        await fetch('/api/links', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
-        });
-        fetchLinks();
+
+        try {
+            const res = await fetch('/api/links', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                alert(`Failed to delete: ${error.error || 'Unknown error'}`);
+                return;
+            }
+
+            await fetchLinks();
+        } catch (error) {
+            console.error('Delete error:', error);
+            alert('Failed to delete resource');
+        }
     };
 
     const handleSave = async (e: React.FormEvent) => {

@@ -66,7 +66,19 @@ const UserProgressSchema = new Schema({
     lastActive: { type: Date, default: Date.now }
 });
 
+// --- Link Schema ---
+const LinkSchema = new Schema({
+    id: { type: String, unique: true, required: true },
+    title: { type: String, required: true },
+    url: { type: String, required: true },
+    category: { type: String, required: true },
+    platform: { type: String, default: 'Other' },
+    difficulty: String,
+    createdAt: { type: Date, default: Date.now }
+});
+
 // Prevent overwriting models if they already exist (hot reload issue in dev)
 export const NoteModel = mongoose.models.Note || mongoose.model('Note', NoteSchema);
 export const SuggestionModel = mongoose.models.Suggestion || mongoose.model('Suggestion', SuggestionSchema);
 export const UserProgress = mongoose.models.UserProgress || mongoose.model('UserProgress', UserProgressSchema);
+export const LinkModel = mongoose.models.Link || mongoose.model('Link', LinkSchema);

@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
-import { getLinks, saveLinks, LinkItem } from '@/lib/storage';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import connectDB from '@/lib/db';
+import { LinkModel } from '@/lib/models';
 
 export async function GET() {
-    const links = await getLinks();
+    await connectDB();
+    const links = await LinkModel.find({}).sort({ category: -1 }).lean();
     return NextResponse.json(links);
 }
 
@@ -16,21 +18,18 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    await connectDB();
     const body = await req.json();
-    const links = await getLinks();
 
-    const newLink: LinkItem = {
+    const newLink = await LinkModel.create({
         id: Date.now().toString(),
         ...body
-    };
-
-    links.push(newLink);
-    await saveLinks(links);
+    });
 
     return NextResponse.json(newLink);
 }
 
-export async function PUT(req: Request) { // Update
+export async function PUT(req: Request) {
     const session = await getServerSession(authOptions);
     const role = (session?.user as any)?.role || 'visitor';
 
@@ -38,16 +37,20 @@ export async function PUT(req: Request) { // Update
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    await connectDB();
     const body = await req.json();
-    const links = await getLinks();
-    const index = links.findIndex(l => l.id === body.id);
 
-    if (index !== -1) {
-        links[index] = { ...links[index], ...body };
-        await saveLinks(links);
-        return NextResponse.json(links[index]);
+    const updated = await LinkModel.findOneAndUpdate(
+        { id: body.id },
+        body,
+        { new: true }
+    );
+
+    if (!updated) {
+        return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+
+    return NextResponse.json(updated);
 }
 
 export async function DELETE(req: Request) {
@@ -58,10 +61,14 @@ export async function DELETE(req: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    await connectDB();
     const { id } = await req.json();
-    let links = await getLinks();
-    links = links.filter(l => l.id !== id);
-    await saveLinks(links);
+
+    const deleted = await LinkModel.findOneAndDelete({ id });
+
+    if (!deleted) {
+        return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
 
     return NextResponse.json({ success: true });
 }
