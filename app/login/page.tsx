@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import styles from './page.module.css';
 import { useState } from 'react';
 
-export default function LoginPage() {
+function LoginForm() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/progress';
     const [isLoading, setIsLoading] = useState(false);
@@ -115,11 +116,18 @@ export default function LoginPage() {
                     Don't have an account?
                     <a href="#" className={styles.link} onClick={(e) => { e.preventDefault(); alert("Currently invite only!"); }}>Sign up</a>
                 </p>
-            </motion.div>
-
-            <style jsx global>{`
+                <style jsx global>{`
                 @keyframes spin { to { transform: rotate(360deg); } }
             `}</style>
+            </motion.div>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#0a0a0f', color: '#fff' }}>Loading AlgoStream...</div>}>
+            <LoginForm />
+        </Suspense>
     );
 }
