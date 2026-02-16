@@ -3,63 +3,113 @@
 import Link from 'next/link';
 import styles from './page.module.css';
 import { motion } from 'framer-motion';
-import { useSession, signIn } from 'next-auth/react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function Home() {
     return (
         <div className={styles.main}>
-            {/* Background Elements */}
-            <div className={styles.bgGlow} />
+            {/* Background Orbs */}
+            <div className={styles.orb1} />
+            <div className={styles.orb2} />
 
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className={styles.hero}
-            >
-                <div className={styles.badge}>DSA Mastery Batch 2026</div>
-                <h1 className={styles.title}>
-                    Master Data Structures <br />
-                    <span>& Algorithms Together</span>
-                </h1>
-                <p className={styles.subtitle}>
-                    A community-driven workspace to track notes, visualize solutions,
-                    and collaborate on complex problems. Built for excellence.
-                </p>
+            <div className={styles.container}>
+                {/* Hero Section */}
+                <motion.div
+                    className={styles.hero}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <div className={styles.badge}>
+                        <span className={styles.badgeDot}></span>
+                        AlgoStream v1.0
+                    </div>
 
-                <div className={styles.ctaGroup}>
-                    <Link href="/notes" className="btn-primary" style={{ padding: '1rem 2rem', borderRadius: '50px', fontSize: '1.1rem', textDecoration: 'none' }}>
-                        Browse Notes
-                    </Link>
-                    <Link href="/links" className={styles.secondaryCta}>
-                        View Resources
-                    </Link>
-                </div>
-            </motion.div>
+                    <h1 className={styles.title}>
+                        Unlock Your <br />
+                        <span className={styles.gradientText}>Coding Potential</span>
+                    </h1>
 
-            {/* Stats / Features Grid */}
-            <motion.div
-                className={styles.grid}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-            >
-                <div className={styles.card}>
-                    <div className={styles.cardIcon}>📝</div>
-                    <h3>Smart Notes</h3>
-                    <p>Interactive, markdown-supported notes with complexity analysis and code syntax highlighting.</p>
+                    <p className={styles.subtitle}>
+                        The premium platform for mastering Data Structures & Algorithms.
+                        Curated notes, visualized solutions, and community-driven progress tracking.
+                    </p>
+
+                    <div className={styles.ctaGroup}>
+                        <Link href="/login" className={styles.primaryBtn}>
+                            Start Learning Free
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                        </Link>
+                        <Link href="/notes" className={styles.secondaryBtn}>
+                            Explore Curriculum
+                        </Link>
+                    </div>
+
+                    <div className={styles.statsRow}>
+                        <div className={styles.statItem}>
+                            <strong>500+</strong> <span>Problems</span>
+                        </div>
+                        <div className={styles.statItem}>
+                            <strong>40+</strong> <span>Patterns</span>
+                        </div>
+                        <div className={styles.statItem}>
+                            <strong>100%</strong> <span>Free</span>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Visual Feature: Floating Code Card */}
+                <motion.div
+                    className={styles.visualWrapper}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                >
+                    <div className={styles.codeCard}>
+                        <div className={styles.codeHeader}>
+                            <div className={styles.dots}>
+                                <span style={{ background: '#ef4444' }}></span>
+                                <span style={{ background: '#fbbf24' }}></span>
+                                <span style={{ background: '#22c55e' }}></span>
+                            </div>
+                            <span className={styles.fileName}>solution.py</span>
+                        </div>
+                        <SyntaxHighlighter
+                            language="python"
+                            style={vscDarkPlus}
+                            customStyle={{ background: 'transparent', padding: '1.5rem', fontSize: '0.85rem' }}
+                        >
+                            {`def floodFill(image, sr, sc, color):
+    # DFS Approach
+    if image[sr][sc] == color:
+        return image
+    
+    fill(image, sr, sc, image[sr][sc], color)
+    return image`}
+                        </SyntaxHighlighter>
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Feature Grid */}
+            <div className={styles.featuresSection}>
+                <div className={styles.featureCard}>
+                    <div className={styles.iconBox} style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa' }}>🚀</div>
+                    <h3>Curated Roadmap</h3>
+                    <p>Stop guessing what to study. Follow a structured path from Arrays to Dynamic Programming.</p>
                 </div>
-                <div className={styles.card}>
-                    <div className={styles.cardIcon}>🤝</div>
-                    <h3>Collaboration</h3>
-                    <p>Suggest edits and improvements to existing notes. Admins review and approve changes.</p>
+                <div className={styles.featureCard}>
+                    <div className={styles.iconBox} style={{ background: 'rgba(168, 85, 247, 0.2)', color: '#c084fc' }}>✨</div>
+                    <h3>Premium Notes</h3>
+                    <p>Beautifully formatted notes with intuition, complexity analysis, and multiple solution approaches.</p>
                 </div>
-                <div className={styles.card}>
-                    <div className={styles.cardIcon}>🔗</div>
-                    <h3>Curated Links</h3>
-                    <p>A centralized repository of important problem links and external resources.</p>
+                <div className={styles.featureCard}>
+                    <div className={styles.iconBox} style={{ background: 'rgba(34, 197, 94, 0.2)', color: '#4ade80' }}>🌱</div>
+                    <h3>Track Growth</h3>
+                    <p>Visualize your progress with detailed analytics and mastery charts. Watch yourself grow.</p>
                 </div>
-            </motion.div>
+            </div>
         </div>
     );
 }
