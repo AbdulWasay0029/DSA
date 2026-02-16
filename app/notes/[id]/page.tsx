@@ -66,23 +66,36 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
         fetchNote();
     }, [params.id]);
 
-    // Fetch completion status
+    // Fetch completion status and calculate topic progress
     useEffect(() => {
-        if (!session) return;
+        if (!session || !note || allNotes.length === 0) return;
 
         const fetchProgress = async () => {
             try {
                 const res = await fetch('/api/progress');
                 if (res.ok) {
                     const data = await res.json();
-                    setIsCompleted(data.completed.includes(params.id));
+                    const completed = data.completed || [];
+                    setCompletedNotes(completed);
+                    setIsCompleted(completed.includes(params.id));
+
+                    // Calculate topic-specific progress
+                    // Find notes with same topic (excluding difficulty tags)
+                    const currentTopics = note.tags?.filter(t => !['Easy', 'Medium', 'Hard'].includes(t)) || [];
+                    if (currentTopics.length > 0) {
+                        const topicNotes = allNotes.filter(n =>
+                            n.tags?.some(tag => currentTopics.includes(tag))
+                        );
+                        const topicCompleted = topicNotes.filter(n => completed.includes(n.id)).length;
+                        setTopicProgress({ completed: topicCompleted, total: topicNotes.length });
+                    }
                 }
             } catch (e) {
                 console.error('Failed to fetch progress:', e);
             }
         };
         fetchProgress();
-    }, [session, params.id]);
+    }, [session, params.id, note, allNotes]);
 
     // Toggle completion
     const toggleCompletion = async () => {
