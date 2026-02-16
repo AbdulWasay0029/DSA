@@ -11,6 +11,7 @@ export default function Navbar() {
     const pathname = usePathname();
     const { data: session } = useSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const navItems = [
         { name: 'Progress', path: '/progress' },
@@ -27,7 +28,7 @@ export default function Navbar() {
         >
             <div className={styles.navContainer}>
                 {/* Logo Area */}
-                <Link href="/" className={styles.logo}>
+                <Link href="/" className={styles.logo} onClick={() => setIsMobileMenuOpen(false)}>
                     <div className={styles.logoIcon}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <rect width="18" height="18" x="3" y="3" rx="2" />
@@ -38,7 +39,7 @@ export default function Navbar() {
                     <span className={styles.brandName}>AlgoStream</span>
                 </Link>
 
-                {/* Navigation Links (Desktop) */}
+                {/* Desktop Nav */}
                 <div className={styles.desktopNav}>
                     {navItems.map((item) => (
                         <Link
@@ -54,8 +55,20 @@ export default function Navbar() {
                     ))}
                 </div>
 
-                {/* User Controls */}
+                {/* Right Controls */}
                 <div className={styles.controls}>
+                    {/* Mobile Menu Toggle */}
+                    <button
+                        className={styles.mobileToggle}
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? (
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                        ) : (
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+                        )}
+                    </button>
+
                     {session ? (
                         <div className={styles.userMenu} onMouseEnter={() => setIsMenuOpen(true)} onMouseLeave={() => setIsMenuOpen(false)}>
                             <button className={styles.avatarBtn} onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -94,6 +107,37 @@ export default function Navbar() {
                     )}
                 </div>
             </div>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        className={styles.mobileMenu}
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <div className={styles.mobileLinks}>
+                            {navItems.map((item) => (
+                                <Link
+                                    key={item.path}
+                                    href={item.path}
+                                    className={`${styles.mobileLink} ${pathname === item.path ? styles.mobileActive : ''}`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
+                            {!session && (
+                                <Link href="/login" className={styles.mobileLink} onClick={() => setIsMobileMenuOpen(false)}>
+                                    Sign In
+                                </Link>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.nav>
     );
 }
