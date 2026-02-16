@@ -26,6 +26,13 @@ body {
   line-height: 1.6;
 }
 
+/* Ensure content starts below the fixed navbar */
+main {
+  padding-top: 80px;
+  /* 70px navbar + 10px spacing */
+  min-height: 100vh;
+}
+
 * {
   box-sizing: border-box;
 }
