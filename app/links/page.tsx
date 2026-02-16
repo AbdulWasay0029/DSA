@@ -1,38 +1,84 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import styles from './page.module.css'
-import { LinkItem } from '@/lib/storage'
-import { useSession } from 'next-auth/react'
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import styles from './page.module.css';
+import { useSession } from 'next-auth/react';
+import { LinkItem } from '@/lib/storage';
 
 export default function LinksPage() {
     const { data: session } = useSession();
     const role = (session?.user as any)?.role || 'visitor';
 
     const [links, setLinks] = useState<LinkItem[]>([]);
-    const [isEditing, setIsEditing] = useState(false); // Toggle Edit Mode
+    const [filteredLinks, setFilteredLinks] = useState<LinkItem[]>([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
     // Editing State
-    const [formData, setFormData] = useState<Partial<LinkItem>>({ category: 'General' });
+    const [isEditingMode, setIsEditingMode] = useState(false);
+    const [formData, setFormData] = useState<Partial<LinkItem>>({ category: 'General', platform: 'Other' });
     const [editingId, setEditingId] = useState<string | null>(null);
 
+    // Initial Fetch
     const fetchLinks = async () => {
-        const res = await fetch('/api/links');
-        if (res.ok) setLinks(await res.json());
-        setIsLoading(false);
+        setIsLoading(true);
+        try {
+            const res = await fetch('/api/links');
+            if (res.ok) {
+                const data = await res.json();
+                setLinks(data);
+                setFilteredLinks(data);
+            }
+        } catch (e) {
+            console.error('Failed to fetch links', e);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
         fetchLinks();
     }, []);
 
-    const categories = Array.from(new Set(links.map(l => l.category))).sort().reverse();
-    // Basic formatting for sorting dates might be needed if format is DD/MM/YYYY
+    // Filter Logic
+    useEffect(() => {
+        const lowerQ = searchQuery.toLowerCase();
+        const filtered = links.filter(link =>
+            link.title.toLowerCase().includes(lowerQ) ||
+            link.category.toLowerCase().includes(lowerQ) ||
+            link.platform?.toLowerCase().includes(lowerQ)
+        );
+        setFilteredLinks(filtered);
+    }, [searchQuery, links]);
 
+    // Derived Categories
+    const categories = Array.from(new Set(filteredLinks.map(l => l.category))).sort().reverse();
+
+    // Helper: Determine platform style
+    const getPlatformStyle = (platform?: string) => {
+        const p = platform?.toLowerCase() || 'other';
+        if (p.includes('leet')) return 'leetcode';
+        if (p.includes('geeks')) return 'geeksforgeeks';
+        if (p.includes('forces')) return 'codeforces';
+        if (p.includes('youtu')) return 'video';
+        if (p.includes('blog') || p.includes('article')) return 'article';
+        return 'other';
+    };
+
+    const getPlatformIcon = (platform?: string) => {
+        const p = platform?.toLowerCase() || 'other';
+        if (p.includes('leet')) return 'LC';
+        if (p.includes('geeks')) return 'GFG';
+        if (p.includes('forces')) return 'CF';
+        if (p.includes('youtu')) return '▶';
+        return '🔗';
+    };
+
+    // --- Admin Handlers ---
     const handleDelete = async (id: string) => {
-        if (!confirm('Delete this link?')) return;
+        if (!confirm('Delete this resource?')) return;
         await fetch('/api/links', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
@@ -53,127 +99,137 @@ export default function LinksPage() {
         });
 
         setEditingId(null);
-        setFormData({ category: 'General', title: '', url: '', platform: '' });
+        setFormData({ category: 'General', platform: 'Other', title: '', url: '' });
         fetchLinks();
     };
 
     const startEdit = (link: LinkItem) => {
         setEditingId(link.id);
         setFormData(link);
+        setIsEditingMode(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <Link href="/" className={styles.backLink}>&larr; Dashboard</Link>
-                <div className={styles.titleArea} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                    <div>
-                        <h1 className={styles.title}>Essential Resources</h1>
-                        <p className={styles.subtitle}>Curated problems and tools for your mastery.</p>
-                    </div>
-                    {role === 'admin' && (
-                        <button
-                            onClick={() => setIsEditing(!isEditing)}
-                            className={styles.backLink} // Reusing style
-                            style={{ borderColor: isEditing ? 'var(--primary)' : 'rgba(255,255,255,0.1)', background: isEditing ? 'rgba(138, 63, 252, 0.1)' : 'transparent' }}
-                        >
-                            {isEditing ? 'Done Editing' : 'Manage Links'}
-                        </button>
-                    )}
-                </div>
+                <motion.h1
+                    className={styles.title}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    Resource Library
+                </motion.h1>
+                <motion.p
+                    className={styles.subtitle}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                >
+                    A curated collection of problems, articles, and videos to boost your learning.
+                </motion.p>
             </header>
 
-            {/* Admin Editor Form */}
-            {isEditing && (
-                <form onSubmit={handleSave} className={styles.categorySection} style={{ background: '#111', border: '1px solid #333', padding: '1.5rem' }}>
-                    <h3 style={{ color: '#fff', marginTop: 0 }}>{editingId ? 'Edit Link' : 'Add New Link'}</h3>
-                    <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '1fr 1fr' }}>
-                        <input
-                            placeholder="Title"
-                            className={styles.linkCard} // reusing styles for input
-                            style={{ background: '#222', border: '1px solid #444', color: '#fff', cursor: 'text', minHeight: 'auto', padding: '0.8rem' }}
-                            value={formData.title || ''}
-                            onChange={e => setFormData({ ...formData, title: e.target.value })}
-                            required
-                        />
-                        <input
-                            placeholder="URL"
-                            className={styles.linkCard}
-                            style={{ background: '#222', border: '1px solid #444', color: '#fff', cursor: 'text', minHeight: 'auto', padding: '0.8rem' }}
-                            value={formData.url || ''}
-                            onChange={e => setFormData({ ...formData, url: e.target.value })}
-                            required
-                        />
-                        <input
-                            placeholder="Category (e.g. 15/08/2025)"
-                            className={styles.linkCard}
-                            style={{ background: '#222', border: '1px solid #444', color: '#fff', cursor: 'text', minHeight: 'auto', padding: '0.8rem' }}
-                            value={formData.category || ''}
-                            onChange={e => setFormData({ ...formData, category: e.target.value })}
-                        />
-                        <input
-                            placeholder="Platform (e.g. LeetCode)"
-                            className={styles.linkCard}
-                            style={{ background: '#222', border: '1px solid #444', color: '#fff', cursor: 'text', minHeight: 'auto', padding: '0.8rem' }}
-                            value={formData.platform || ''}
-                            onChange={e => setFormData({ ...formData, platform: e.target.value })}
-                        />
-                    </div>
-                    <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                        <button type="submit" style={{ padding: '0.5rem 1.5rem', background: 'var(--primary)', border: 'none', borderRadius: '4px', color: '#fff', cursor: 'pointer' }}>
-                            {editingId ? 'Update' : 'Add Link'}
-                        </button>
-                        {editingId && <button type="button" onClick={() => { setEditingId(null); setFormData({ category: 'General' }); }} style={{ padding: '0.5rem', background: 'transparent', border: '1px solid #444', color: '#888', borderRadius: '4px', cursor: 'pointer' }}>Cancel</button>}
-                    </div>
-                </form>
+            {/* Search Bar */}
+            <div className={styles.searchWrapper}>
+                <svg className={styles.searchIcon} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+                <input
+                    className={styles.searchInput}
+                    placeholder="Search resources, topics, platforms..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
+
+            {/* Admin Controls */}
+            {role === 'admin' && (
+                <div className={styles.controls}>
+                    <button
+                        className={`${styles.adminBtn} ${isEditingMode ? styles.active : ''}`}
+                        onClick={() => setIsEditingMode(!isEditingMode)}
+                    >
+                        {isEditingMode ? 'Close Editor' : '+ Manage Resources'}
+                    </button>
+                </div>
             )}
 
-            <div className={styles.content}>
-                {isLoading ? <p style={{ textAlign: 'center', color: '#888' }}>Loading resources...</p> : categories.map(category => (
-                    <div key={category} className={styles.categorySection}>
-                        <h2 className={styles.categoryTitle}>{category}</h2>
-                        <div className={styles.linkList}>
-                            {links.filter(l => l.category === category).map(link => (
-                                <div key={link.id} style={{ position: 'relative' }}>
-                                    <a
-                                        href={link.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.linkCard}
-                                        style={role === 'admin' && isEditing ? { pointerEvents: 'none', opacity: 0.7 } : {}}
-                                    >
-                                        <div className={styles.linkInfo}>
-                                            <span className={styles.linkTitle}>{link.title}</span>
-                                            <span className={`${styles.badge} ${styles[link.platform?.toLowerCase() || '']}`}>
-                                                {link.platform || 'Link'}
-                                            </span>
-                                        </div>
-                                        <span className={styles.arrow}>↗</span>
-                                    </a>
+            {/* Admin Editor Panel */}
+            <AnimatePresence>
+                {isEditingMode && role === 'admin' && (
+                    <motion.div
+                        className={styles.editorArea}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                    >
+                        <h3>{editingId ? 'Edit Resource' : 'Add New Resource'}</h3>
+                        <form onSubmit={handleSave}>
+                            <div className={styles.formGrid}>
+                                <input className={styles.input} placeholder="Title" value={formData.title || ''} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
+                                <input className={styles.input} placeholder="URL" value={formData.url || ''} onChange={e => setFormData({ ...formData, url: e.target.value })} required />
+                                <input className={styles.input} placeholder="Category (e.g. Dynamic Programming)" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} />
+                                <input className={styles.input} placeholder="Platform (e.g. LeetCode, YouTube)" value={formData.platform || ''} onChange={e => setFormData({ ...formData, platform: e.target.value })} />
+                            </div>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <button type="submit" className={styles.actionBtn}>{editingId ? 'Update Resource' : 'Add Resource'}</button>
+                                {editingId && <button type="button" onClick={() => { setEditingId(null); setFormData({}); }} style={{ background: 'transparent', color: '#888', border: '1px solid #444', padding: '0.8rem', borderRadius: '8px', cursor: 'pointer' }}>Cancel Edit</button>}
+                            </div>
+                        </form>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-                                    {isEditing && (
-                                        <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', gap: '0.5rem' }}>
-                                            <button
-                                                onClick={() => startEdit(link)}
-                                                style={{ background: '#2196f3', border: 'none', borderRadius: '4px', color: '#fff', padding: '0.2rem 0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(link.id)}
-                                                style={{ background: '#f44336', border: 'none', borderRadius: '4px', color: '#fff', padding: '0.2rem 0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}
-                                            >
-                                                X
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
+            {/* Content Grid */}
+            {isLoading ? (
+                <div style={{ textAlign: 'center', padding: '4rem' }}><span className="spinner"></span></div>
+            ) : (
+                <div>
+                    {categories.map((category) => (
+                        <div key={category} className={styles.categorySection}>
+                            <h2 className={styles.categoryTitle}>
+                                <span style={{ width: '10px', height: '10px', background: 'var(--primary)', borderRadius: '50%', display: 'inline-block' }}></span>
+                                {category}
+                            </h2>
+                            <div className={styles.grid}>
+                                {filteredLinks.filter(l => l.category === category).map((link, i) => (
+                                    <motion.div
+                                        key={link.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: i * 0.05 }}
+                                    >
+                                        <a href={link.url} target="_blank" rel="noopener noreferrer" className={styles.card}>
+                                            <div className={styles.cardHeader}>
+                                                <div className={`${styles.platformIcon} ${styles[getPlatformStyle(link.platform)]}`}>
+                                                    {getPlatformIcon(link.platform)}
+                                                </div>
+                                                <svg className={styles.externalIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
+                                            </div>
+                                            <div className={styles.cardTitle}>{link.title}</div>
+                                            <div className={styles.cardFooter}>
+                                                <span>{link.platform || 'Resource'}</span>
+                                            </div>
+
+                                            {/* Admin Overlay */}
+                                            {isEditingMode && role === 'admin' && (
+                                                <div className={styles.editOverlay} onClick={(e) => e.preventDefault()}>
+                                                    <button className={styles.iconBtn} onClick={(e) => { e.preventDefault(); startEdit(link); }}>✎</button>
+                                                    <button className={`${styles.iconBtn} ${styles.deleteBtn}`} onClick={(e) => { e.preventDefault(); handleDelete(link.id); }}>🗑</button>
+                                                </div>
+                                            )}
+                                        </a>
+                                    </motion.div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                    {filteredLinks.length === 0 && (
+                        <div style={{ textAlign: 'center', color: '#888', marginTop: '4rem' }}>
+                            No resources found matching "{searchQuery}"
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
-    )
+    );
 }
