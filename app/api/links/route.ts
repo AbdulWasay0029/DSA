@@ -6,7 +6,7 @@ import { LinkModel } from '@/lib/models';
 
 export async function GET() {
     await connectDB();
-    const links = await LinkModel.find({}).sort({ category: -1 }).lean();
+    const links = await LinkModel.find({}).lean();
     return NextResponse.json(links);
 }
 

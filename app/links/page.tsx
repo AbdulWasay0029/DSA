@@ -53,8 +53,15 @@ export default function LinksPage() {
         setFilteredLinks(filtered);
     }, [searchQuery, links]);
 
-    // Derived Categories
-    const categories = Array.from(new Set(filteredLinks.map(l => l.category))).sort().reverse();
+    // Derived Categories - sorted by date (newest first)
+    const categories = Array.from(new Set(filteredLinks.map(l => l.category))).sort((a, b) => {
+        // Parse DD/MM/YYYY format
+        const parseDate = (dateStr: string) => {
+            const [day, month, year] = dateStr.split('/').map(Number);
+            return new Date(year, month - 1, day).getTime();
+        };
+        return parseDate(b) - parseDate(a); // Descending (newest first)
+    });
 
     // Helper: Determine platform style
     const getPlatformStyle = (platform?: string) => {
