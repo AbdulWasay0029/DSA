@@ -107,7 +107,7 @@ export default function LinksPage() {
         setEditingId(link.id);
         setFormData(link);
         setIsEditingMode(true);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Removed auto-scroll - let user stay where they are
     };
 
     return (
@@ -145,10 +145,14 @@ export default function LinksPage() {
             {role === 'admin' && (
                 <div className={styles.controls}>
                     <button
-                        className={`${styles.adminBtn} ${isEditingMode ? styles.active : ''}`}
-                        onClick={() => setIsEditingMode(!isEditingMode)}
+                        className={styles.addBtn}
+                        onClick={() => {
+                            setEditingId(null);
+                            setFormData({ category: '', platform: 'SmartInterviews', title: '', url: '' });
+                            setIsEditingMode(true);
+                        }}
                     >
-                        {isEditingMode ? 'Close Editor' : '+ Manage Resources'}
+                        + Add New Resource
                     </button>
                 </div>
             )}
@@ -162,17 +166,44 @@ export default function LinksPage() {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                     >
-                        <h3>{editingId ? 'Edit Resource' : 'Add New Resource'}</h3>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                            <h3 style={{ margin: 0 }}>{editingId ? 'Edit Resource' : 'Add New Resource'}</h3>
+                            <button
+                                onClick={() => {
+                                    setIsEditingMode(false);
+                                    setEditingId(null);
+                                    setFormData({});
+                                }}
+                                style={{ background: 'transparent', border: 'none', color: '#888', fontSize: '1.5rem', cursor: 'pointer' }}
+                            >
+                                ×
+                            </button>
+                        </div>
                         <form onSubmit={handleSave}>
                             <div className={styles.formGrid}>
                                 <input className={styles.input} placeholder="Title" value={formData.title || ''} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
                                 <input className={styles.input} placeholder="URL" value={formData.url || ''} onChange={e => setFormData({ ...formData, url: e.target.value })} required />
-                                <input className={styles.input} placeholder="Category (e.g. Dynamic Programming)" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} />
-                                <input className={styles.input} placeholder="Platform (e.g. LeetCode, YouTube)" value={formData.platform || ''} onChange={e => setFormData({ ...formData, platform: e.target.value })} />
+                                <input className={styles.input} placeholder="Category (e.g. 13/01/2026)" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} required />
+                                <select className={styles.input} value={formData.platform || 'SmartInterviews'} onChange={e => setFormData({ ...formData, platform: e.target.value })}>
+                                    <option value="SmartInterviews">SmartInterviews</option>
+                                    <option value="LeetCode">LeetCode</option>
+                                    <option value="InterviewBit">InterviewBit</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
-                            <div style={{ display: 'flex', gap: '1rem' }}>
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                                 <button type="submit" className={styles.actionBtn}>{editingId ? 'Update Resource' : 'Add Resource'}</button>
-                                {editingId && <button type="button" onClick={() => { setEditingId(null); setFormData({}); }} style={{ background: 'transparent', color: '#888', border: '1px solid #444', padding: '0.8rem', borderRadius: '8px', cursor: 'pointer' }}>Cancel Edit</button>}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsEditingMode(false);
+                                        setEditingId(null);
+                                        setFormData({});
+                                    }}
+                                    style={{ background: 'transparent', color: '#888', border: '1px solid #444', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer' }}
+                                >
+                                    Cancel
+                                </button>
                             </div>
                         </form>
                     </motion.div>

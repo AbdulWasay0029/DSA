@@ -216,28 +216,17 @@
 /* Admin Edit Overlay */
 .editOverlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(2px);
+    top: 0.5rem;
+    right: 0.5rem;
     display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 0.5rem;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.card:hover .editOverlay {
-    opacity: 1;
+    z-index: 10;
 }
 
 .iconBtn {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.9);
     border: none;
-    border-radius: 50%;
+    border-radius: 6px;
     width: 32px;
     height: 32px;
     display: flex;
@@ -246,11 +235,22 @@
     cursor: pointer;
     color: #000;
     font-size: 0.9rem;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.iconBtn:hover {
+    background: #fff;
+    transform: scale(1.1);
 }
 
 .deleteBtn {
-    background: #ef4444;
+    background: rgba(239, 68, 68, 0.9);
     color: #fff;
+}
+
+.deleteBtn:hover {
+    background: #ef4444;
 }
 
 /* Edit Form Modal/Area */
