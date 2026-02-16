@@ -1,185 +1,118 @@
 .container {
-    max-width: 1400px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
     min-height: 100vh;
 }
 
 .header {
-    margin-bottom: 3rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    border-bottom: 1px solid #222;
-    padding-bottom: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
-.titleArea h1 {
-    font-size: 3.5rem;
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    color: #fff;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    color: #94a3b8;
     margin: 0;
-    line-height: 1.1;
-    background: linear-gradient(135deg, #fff 0%, #888 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.titleArea p {
-    color: #666;
-    margin-top: 0.5rem;
     font-size: 1.1rem;
 }
 
-.controls {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 1rem;
-}
-
-.roleToggle {
-    background: #1a1a1a;
-    border: 1px solid #333;
-    padding: 0.4rem;
-    border-radius: 50px;
-    display: flex;
-    position: relative;
-    cursor: pointer;
-}
-
-.roleOption {
-    padding: 0.4rem 1.2rem;
-    border-radius: 40px;
-    font-size: 0.9rem;
-    color: #666;
-    transition: all 0.3s;
-    position: relative;
-    z-index: 1;
-}
-
-.roleOption.active {
-    color: #000;
-    font-weight: 600;
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.actionBtn {
-    background: #fff;
-    color: #000;
-    border: none;
-    padding: 0.8rem 1.5rem;
+.createBtn {
+    background: var(--primary);
+    color: #fff;
+    padding: 0.6rem 1.2rem;
     border-radius: 8px;
+    text-decoration: none;
     font-weight: 600;
-    cursor: pointer;
     transition: transform 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
-.actionBtn:hover {
+.createBtn:hover {
     transform: translateY(-2px);
 }
 
-.secondaryBtn {
+/* Filter Bar */
+.filterBar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.filterBtn {
     background: transparent;
-    border: 1px solid #333;
-    color: #fff;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #64748b;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
     cursor: pointer;
+    font-size: 0.9rem;
     transition: all 0.2s;
 }
 
-.secondaryBtn:hover {
-    border-color: #666;
-    background: #111;
+.filterBtn:hover,
+.filterBtn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: #fff;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
+.active {
+    background: #fff;
+    color: #000;
 }
 
-/* Review Section */
-.reviewSection {
-    margin-bottom: 4rem;
-    background: rgba(255, 165, 0, 0.05);
-    border: 1px solid rgba(255, 165, 0, 0.2);
-    border-radius: 12px;
-    padding: 2rem;
+/* Syllabus List */
+.topicSection {
+    margin-bottom: 3rem;
 }
 
-.reviewHeader {
+.topicHeader {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1.5rem;
+    align-items: baseline;
+    margin-bottom: 1rem;
 }
 
-.reviewHeader h2 {
-    color: #ffa500;
+.topicTitle {
     font-size: 1.5rem;
+    color: #fff;
     margin: 0;
+    position: relative;
+    padding-left: 1rem;
 }
 
-.suggestionList {
+.topicTitle::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 1.2rem;
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+.topicCount {
+    color: #64748b;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.notesGrid {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1rem;
-}
-
-.suggestionCard {
-    background: #111;
-    border: 1px solid #333;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.suggestionInfo h4 {
-    margin: 0 0 0.3rem 0;
-    color: #eee;
-}
-
-.suggestionInfo p {
-    margin: 0;
-    color: #666;
-    font-size: 0.85rem;
-}
-
-.suggestionActions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.approveBtn {
-    background: #28a745;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
-}
-
-.rejectBtn {
-    background: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
-}
-
-.reviewBtn {
-    background: #333;
-    color: #ccc;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
 }

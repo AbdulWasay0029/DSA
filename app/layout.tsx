@@ -1,15 +1,22 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Outfit } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import AuthProvider from '@/components/AuthProvider'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
 
-export const metadata = {
-    title: 'DSA Dashboard',
-    description: 'Track your Data Structures and Algorithms progress',
+export const metadata: Metadata = {
+    title: {
+        template: '%s | AlgoStream',
+        default: 'AlgoStream | Master Data Structures & Algorithms',
+    },
+    description: 'The premium platform for tracking DSA progress, visualizing solutions, and mastering coding interviews.',
+    icons: {
+        icon: '/icon.svg',
+    },
 }
 
 export default function RootLayout({
@@ -19,7 +26,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={`${inter.variable} ${outfit.variable}`}>
                 <AuthProvider>
                     <Navbar />
                     <main>

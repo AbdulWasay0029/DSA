@@ -1,48 +1,43 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import styles from './NoteCard.module.css'
-import { Note } from '@/data/notes'
-import { motion } from 'framer-motion'
+import Link from 'next/link';
+import styles from './NoteCard.module.css';
+import { Note } from '@/data/notes';
 
 export default function NoteCard({ note }: { note: Note }) {
-    // Get complexity from first solution if available
-    const complexity = note.solutions?.[0]?.complexity;
+    // Determine difficulty/status (Mock logic for now)
+    const difficulty = note.tags?.find(t => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
+    const isCompleted = false; // TODO: Hook up to user progress
 
     return (
-        <motion.div
-            whileHover={{ y: -5 }}
-            whileTap={{ scale: 0.98 }}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            style={{ height: '100%' }}
-        >
-            <Link href={`/notes/${note.id}`} className={styles.card}>
+        <Link href={`/notes/${note.id}`} className={styles.card}>
+            {/* Status Checkbox Visual */}
+            <div className={`${styles.statusIndicator} ${isCompleted ? styles.completed : ''}`}>
+                {isCompleted && (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                )}
+            </div>
+
+            <div className={styles.content}>
                 <div className={styles.header}>
                     <h3 className={styles.title}>{note.title}</h3>
-                    {complexity && (complexity.time || complexity.space) && (
-                        <div className={styles.complexityBadge}>
-                            {complexity.time || complexity.space}
-                        </div>
-                    )}
                 </div>
 
-                <p className={styles.description}>{note.description}</p>
-
-                {note.tags && note.tags.length > 0 && (
-                    <div className={styles.tags}>
-                        {note.tags.map(tag => (
-                            <span key={tag} className={styles.tag}>{tag}</span>
-                        ))}
+                <div className={styles.metaRow}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <span className={`${styles.difficultyDot} ${styles['diff' + difficulty]}`}></span>
+                        <span>{difficulty}</span>
                     </div>
-                )}
-
-                <div className={styles.footer}>
-                    <span>View Solutions</span>
-                    <span className={styles.arrow}>&rarr;</span>
+                    <span>•</span>
+                    <span>{note.solutions?.length || 0} Solutions</span>
                 </div>
-            </Link>
-        </motion.div>
-    )
+            </div>
+
+            <div className={styles.arrow}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+            </div>
+        </Link>
+    );
 }
