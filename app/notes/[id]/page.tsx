@@ -32,12 +32,15 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
     const { data: session } = useSession();
     const role = (session?.user as any)?.role || 'visitor';
     const [note, setNote] = useState<Note | null>(null);
+    const [allNotes, setAllNotes] = useState<Note[]>([]);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState<Note | null>(null);
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const [isCompleted, setIsCompleted] = useState(false);
     const [completionLoading, setCompletionLoading] = useState(false);
+    const [completedNotes, setCompletedNotes] = useState<string[]>([]);
+    const [topicProgress, setTopicProgress] = useState({ completed: 0, total: 0 });
 
     // Fetch Note
     useEffect(() => {
@@ -45,8 +48,9 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
             try {
                 const res = await fetch('/api/notes');
                 if (res.ok) {
-                    const allNotes = await res.json();
-                    const found = allNotes.find((n: any) => n.id === params.id);
+                    const notes = await res.json();
+                    setAllNotes(notes);
+                    const found = notes.find((n: any) => n.id === params.id);
                     if (found) {
                         const diff = found.tags?.find((t: string) => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
                         setNote({ ...found, difficulty: diff });
@@ -275,33 +279,30 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
                     {/* Progress Card */}
-                    <div className={styles.sidebarCard}>
-                        <h3 className={styles.cardTitle}>Topic Mastery</h3>
-                        <div className={styles.progressStat}>
-                            <span style={{ color: '#aaa', fontSize: '0.9rem' }}>Progress</span>
-                            <span className={styles.progressValue}>65%</span>
+                    {session && topicProgress.total > 0 && (
+                        <div className={styles.sidebarCard}>
+                            <h3 className={styles.cardTitle}>Topic Mastery</h3>
+                            <div className={styles.progressStat}>
+                                <span style={{ color: '#aaa', fontSize: '0.9rem' }}>
+                                    {topicProgress.completed} / {topicProgress.total} Completed
+                                </span>
+                                <span className={styles.progressValue}>
+                                    {Math.round((topicProgress.completed / topicProgress.total) * 100)}%
+                                </span>
+                            </div>
+                            <div className={styles.progressBarBG}>
+                                <div
+                                    className={styles.progressBarFill}
+                                    style={{ width: `${(topicProgress.completed / topicProgress.total) * 100}%` }}
+                                ></div>
+                            </div>
+                            <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '1rem' }}>
+                                {topicProgress.completed === topicProgress.total
+                                    ? '🎉 Topic mastered! Amazing work!'
+                                    : 'Keep going! You\'re making great progress.'}
+                            </p>
                         </div>
-                        <div className={styles.progressBarBG}>
-                            <div className={styles.progressBarFill} style={{ width: '65%' }}></div>
-                        </div>
-                        <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '1rem' }}>
-                            You're doing great! Keep solving to reach mastery.
-                        </p>
-                    </div>
-
-                    {/* Contributors Card */}
-                    <div className={styles.sidebarCard}>
-                        <h3 className={styles.cardTitle}>Contributors</h3>
-                        <div className={styles.contributorList}>
-                            <div className={styles.contributorAvatar} style={{ background: '#3b82f6' }}>AW</div>
-                            <div className={styles.contributorAvatar} style={{ background: '#ef4444' }}>JD</div>
-                            <div className={styles.contributorAvatar} style={{ background: '#10b981' }}>KS</div>
-                            <div className={styles.contributorAvatar} style={{ background: '#333', border: '1px dashed #666' }}>+2</div>
-                        </div>
-                        <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '1rem' }}>
-                            Top contributors for this topic.
-                        </p>
-                    </div>
+                    )}
 
                     {/* Tips Card */}
                     {data.tips && data.tips.length > 0 && (
