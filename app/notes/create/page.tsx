@@ -4,19 +4,15 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import styles from '../[id]/page.module.css';
+import styles from './page.module.css';
 import RichTextToolbar from '@/components/RichTextToolbar';
 import { Note } from '@/data/notes';
-
-// Reuse styles from detail page for consistency
-// We are essentially recreating the "Edit Mode" of the detail page but starting blank
 
 export default function CreateNotePage() {
     const { data: session } = useSession();
     const router = useRouter();
     const role = (session?.user as any)?.role || 'visitor';
 
-    // Initial blank state
     const [data, setData] = useState<Partial<Note>>({
         title: '',
         description: '',
@@ -28,7 +24,6 @@ export default function CreateNotePage() {
 
     const [isSaving, setIsSaving] = useState(false);
 
-    // --- Handlers (copied & adapted from Detail Page) ---
     const handleInsertText = (text: string) => {
         setData(prev => ({ ...prev, fullDescription: (prev.fullDescription || '') + text }));
     };
@@ -78,23 +73,27 @@ export default function CreateNotePage() {
 
     return (
         <div className={styles.container}>
-            <Link href="/notes" className={styles.backLink}>&larr; Cancel</Link>
+            <Link href="/notes" className={styles.backLink}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+                Back to Curriculum
+            </Link>
 
-            <header className={styles.header}>
-                <h1 style={{ color: '#888', fontSize: '1rem', marginBottom: '1rem' }}>
-                    {role === 'admin' ? 'Create New Note' : 'Suggest New Note'}
+            <div className={styles.header}>
+                <h1 className={styles.pageTitle}>
+                    {role === 'admin' ? '✨ Create New Problem' : '💡 Suggest New Problem'}
                 </h1>
 
                 <input
-                    className={`${styles.input} ${styles.headerInput}`}
+                    className={`${styles.input} ${styles.titleInput}`}
                     value={data.title}
                     onChange={e => setData({ ...data, title: e.target.value })}
-                    placeholder="Note Title..."
+                    placeholder="Problem Title..."
                 />
 
                 <input
                     className={styles.input}
-                    style={{ marginBottom: '1rem', fontSize: '1.2rem', color: '#ccc' }}
                     value={data.description}
                     onChange={e => setData({ ...data, description: e.target.value })}
                     placeholder="Short summary (shown on card)..."
@@ -108,31 +107,37 @@ export default function CreateNotePage() {
                     onChange={e => setData({ ...data, fullDescription: e.target.value })}
                     placeholder="Full detailed explanation (Markdown supported)..."
                 />
-            </header>
+            </div>
 
             <div className={styles.grid}>
                 {/* Tips */}
-                <div className={styles.tipsSection}>
-                    <h3>🚀 Tips & Tricks</h3>
-                    {data.tips?.map((tip, i) => (
-                        <div key={i} style={{ display: 'flex', gap: '5px', marginBottom: '5px' }}>
-                            <input
-                                className={styles.smallInput}
-                                value={tip}
-                                onChange={e => {
+                <div className={styles.card}>
+                    <h3>💡 Tips & Tricks</h3>
+                    <div className={styles.tipsList}>
+                        {data.tips?.map((tip, i) => (
+                            <div key={i} className={styles.tipItem}>
+                                <input
+                                    className={styles.input}
+                                    style={{ marginBottom: 0 }}
+                                    value={tip}
+                                    onChange={e => {
+                                        const newTips = [...(data.tips || [])];
+                                        newTips[i] = e.target.value;
+                                        setData({ ...data, tips: newTips });
+                                    }}
+                                    placeholder="Enter a tip..."
+                                />
+                                <button className={styles.deleteBtn} onClick={() => {
                                     const newTips = [...(data.tips || [])];
-                                    newTips[i] = e.target.value;
+                                    newTips.splice(i, 1);
                                     setData({ ...data, tips: newTips });
-                                }}
-                            />
-                            <button className={styles.deleteBtn} onClick={() => {
-                                const newTips = [...(data.tips || [])];
-                                newTips.splice(i, 1);
-                                setData({ ...data, tips: newTips });
-                            }}>X</button>
-                        </div>
-                    ))}
-                    <button className={styles.addBtn} onClick={() => setData({ ...data, tips: [...(data.tips || []), ''] })}>+ Add Tip</button>
+                                }}>×</button>
+                            </div>
+                        ))}
+                    </div>
+                    <button className={styles.addBtn} onClick={() => setData({ ...data, tips: [...(data.tips || []), ''] })}>
+                        + Add Tip
+                    </button>
                 </div>
 
                 {/* Tags */}
@@ -142,24 +147,28 @@ export default function CreateNotePage() {
                         className={styles.input}
                         value={data.tags?.join(', ')}
                         onChange={e => setData({ ...data, tags: e.target.value.split(',').map(s => s.trim()) })}
-                        placeholder="Arrays, DP, Graph..."
+                        placeholder="Arrays, Easy, DP..."
                     />
+                    <p style={{ color: '#64748b', fontSize: '0.85rem', margin: '0.5rem 0 0 0' }}>
+                        Separate tags with commas. Include topic and difficulty.
+                    </p>
                 </div>
             </div>
 
-            <div className={styles.solutions}>
+            {/* Solutions */}
+            <div>
                 {data.solutions?.map((solution, index) => (
                     <div key={index} className={styles.solutionBlock}>
                         <div className={styles.solutionHeader}>
                             <input
-                                className={`${styles.input}`}
-                                style={{ fontSize: '1.5rem', color: 'var(--primary)', width: 'auto' }}
+                                className={`${styles.input} ${styles.solutionTitle}`}
+                                style={{ marginBottom: 0 }}
                                 value={solution.title}
                                 onChange={e => updateSolution(index, 'title', e.target.value)}
+                                placeholder="Solution name..."
                             />
                             <select
-                                className={styles.smallInput}
-                                style={{ width: 'auto', marginLeft: 'auto' }}
+                                className={styles.select}
                                 value={solution.language}
                                 onChange={e => updateSolution(index, 'language', e.target.value)}
                             >
@@ -168,61 +177,63 @@ export default function CreateNotePage() {
                                 <option value="javascript">JavaScript</option>
                                 <option value="java">Java</option>
                             </select>
-                            <button className={styles.deleteBtn} onClick={() => {
-                                const newSols = [...(data.solutions || [])];
-                                newSols.splice(index, 1);
-                                setData({ ...data, solutions: newSols });
-                            }}>Remove</button>
+                            {data.solutions && data.solutions.length > 1 && (
+                                <button className={styles.deleteBtn} onClick={() => {
+                                    const newSols = [...(data.solutions || [])];
+                                    newSols.splice(index, 1);
+                                    setData({ ...data, solutions: newSols });
+                                }}>Remove Solution</button>
+                            )}
                         </div>
 
                         {/* Complexity */}
-                        <div className={`${styles.card} ${styles.complexity}`} style={{ marginBottom: '1rem' }}>
-                            <div className={styles.complexityGrid} style={{ flexDirection: 'column', gap: '1rem' }}>
-                                <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <div className={styles.stat} style={{ flex: 1 }}>
-                                        <span>Time Complexity</span>
-                                        <input
-                                            className={styles.smallInput}
-                                            value={solution.complexity?.time || ''}
-                                            onChange={e => updateSolution(index, 'complexity.time', e.target.value)}
-                                            placeholder="e.g. O(N)"
-                                        />
-                                    </div>
-                                    <div className={styles.stat} style={{ flex: 1 }}>
-                                        <span>Space Complexity</span>
-                                        <input
-                                            className={styles.smallInput}
-                                            value={solution.complexity?.space || ''}
-                                            onChange={e => updateSolution(index, 'complexity.space', e.target.value)}
-                                            placeholder="e.g. O(1)"
-                                        />
-                                    </div>
-                                </div>
+                        <div className={styles.complexityGrid}>
+                            <div className={styles.complexityInput}>
+                                <label>Time Complexity</label>
+                                <input
+                                    className={styles.input}
+                                    style={{ marginBottom: 0 }}
+                                    value={solution.complexity?.time || ''}
+                                    onChange={e => updateSolution(index, 'complexity.time', e.target.value)}
+                                    placeholder="e.g. O(N)"
+                                />
+                            </div>
+                            <div className={styles.complexityInput}>
+                                <label>Space Complexity</label>
+                                <input
+                                    className={styles.input}
+                                    style={{ marginBottom: 0 }}
+                                    value={solution.complexity?.space || ''}
+                                    onChange={e => updateSolution(index, 'complexity.space', e.target.value)}
+                                    placeholder="e.g. O(1)"
+                                />
                             </div>
                         </div>
 
-                        <div className={styles.codeWindow}>
-                            <textarea
-                                className={`${styles.textarea} ${styles.codeEditor}`}
-                                value={solution.code}
-                                onChange={e => updateSolution(index, 'code', e.target.value)}
-                                spellCheck={false}
-                                placeholder="Paste your solution code here..."
-                            />
-                        </div>
+                        <textarea
+                            className={`${styles.textarea} ${styles.codeEditor}`}
+                            value={solution.code}
+                            onChange={e => updateSolution(index, 'code', e.target.value)}
+                            spellCheck={false}
+                            placeholder="Paste your solution code here..."
+                        />
                     </div>
                 ))}
 
-                <button className={styles.addBtn} onClick={() => setData({ ...data, solutions: [...(data.solutions || []), { title: 'New Solution', language: 'python', code: '', complexity: {} }] })}>
-                    + Add Solution
+                <button
+                    className={styles.addBtn}
+                    onClick={() => setData({
+                        ...data,
+                        solutions: [...(data.solutions || []), { title: 'Alternative Solution', language: 'python', code: '', complexity: {} }]
+                    })}
+                >
+                    + Add Another Solution
                 </button>
             </div>
 
-            <div className={styles.editControls}>
-                <button className={styles.saveBtn} onClick={handleSave} disabled={isSaving}>
-                    {isSaving ? 'Saving...' : (role === 'admin' ? 'Publish Note' : 'Submit Suggestion')}
-                </button>
-            </div>
+            <button className={styles.saveBtn} onClick={handleSave} disabled={isSaving}>
+                {isSaving ? 'Saving...' : (role === 'admin' ? '✓ Publish Problem' : '📤 Submit Suggestion')}
+            </button>
         </div>
     );
 }

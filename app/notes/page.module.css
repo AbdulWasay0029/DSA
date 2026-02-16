@@ -29,15 +29,20 @@
 .createBtn {
     background: var(--primary);
     color: #fff;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: 600;
-    transition: transform 0.2s;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(138, 63, 252, 0.3);
 }
 
 .createBtn:hover {
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 63, 252, 0.4);
 }
 
 /* Filter Bar */
