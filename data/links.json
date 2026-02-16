@@ -35,6 +35,223 @@
         "platform": "SmartInterviews"
     },
     {
+        "id": "23-12-1",
+        "title": "Finding the Floor",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/finding-the-floor",
+        "category": "23/12/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "23-12-2",
+        "title": "Finding Frequency",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/finding-frequency",
+        "category": "23/12/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "29-12-1",
+        "title": "Finding CubeRoot",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/finding-cuberoot",
+        "category": "29/12/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "29-12-2",
+        "title": "Cabinets Partitioning",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/cabinets-partitioning",
+        "category": "29/12/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "29-12-3",
+        "title": "Protective Villagers",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/protective-villagers",
+        "category": "29/12/2025",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "05-01-1",
+        "title": "Non Decreasing Subsequences",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/non-decreasing-subsequences",
+        "category": "05/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "05-01-2",
+        "title": "Maximum Contiguous Subsequence",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/maximum-contiguous-subsequence",
+        "category": "05/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "05-01-3",
+        "title": "Rearrange Sequence 1",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/rearrange-sequence-1",
+        "category": "05/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "05-01-4",
+        "title": "Rearrange Sequence 2",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/rearrange-sequence-2",
+        "category": "05/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "05-01-5",
+        "title": "Rearrange Sequence 3",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/rearrange-sequence-3",
+        "category": "05/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "05-01-6",
+        "title": "Distinct Elements in Window",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/distinct-elements-in-window",
+        "category": "05/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-1",
+        "title": "Print Hollow Diamond Pattern",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/print-hollow-diamond-pattern",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-2",
+        "title": "Checkerboard Pattern",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/checkerboard-pattern",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-3",
+        "title": "Spiral Pattern",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/spiral-pattern",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-4",
+        "title": "Rotation of Matrix",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/rotation-of-matrix",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-5",
+        "title": "Diagonal Traversal of Matrix",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/diagonal-traversal-of-matrix",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-6",
+        "title": "Spiral Traversal of Matrix",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/spiral-traversal-of-matrix",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-7",
+        "title": "Product of 2 Matrices",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/product-of-2-matrices",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-8",
+        "title": "Flip Bits",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/flip-bits",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-9",
+        "title": "Balanced Parentheses",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/balanced-parentheses",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-10",
+        "title": "Smart Square",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/smart-square",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "06-01-11",
+        "title": "Power Game",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/power-game",
+        "category": "06/01/2026 (Review)",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-1",
+        "title": "Product of XOR of Pairs",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/product-of-xor-of-pairs",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-2",
+        "title": "Tower of Hanoi Modified",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/tower-of-hanoi-modified",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-3",
+        "title": "N - Queens",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/n-queens",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-4",
+        "title": "Interleavings",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/interleavings",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-5",
+        "title": "First Repeating Character - 1",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/first-repeating-character-1",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-6",
+        "title": "First Repeating Character - 2",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/first-repeating-character-2",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-7",
+        "title": "Check Anagrams",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/check-anagrams",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-8",
+        "title": "Longest Palindromic Substring",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/longest-palindromic-substring",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
+        "id": "13-01-9",
+        "title": "Enclosing Substring",
+        "url": "https://hive.smartinterviews.in/contests/smart-interviews-primary/problems/enclosing-substring",
+        "category": "13/01/2026",
+        "platform": "SmartInterviews"
+    },
+    {
         "id": "29-08-1",
         "title": "SI Sample Codes",
         "url": "https://smartinterviews.in/samplecodes/",
