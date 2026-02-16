@@ -26,7 +26,8 @@ export const authOptions: NextAuthOptions = {
         },
     },
     pages: {
-        // We can add custom sign-in pages later if needed
-        // signIn: '/auth/signin',
-    }
+        signIn: '/login',
+        error: '/login', // Redirect errors back to login page
+    },
+    debug: process.env.NODE_ENV === 'development',
 };
