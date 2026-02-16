@@ -80,6 +80,9 @@ export default function LinksPage() {
     const handleDelete = async (id: string) => {
         if (!confirm('Delete this resource?')) return;
 
+        // Save current scroll position
+        const scrollY = window.scrollY;
+
         try {
             const res = await fetch('/api/links', {
                 method: 'DELETE',
@@ -94,6 +97,9 @@ export default function LinksPage() {
             }
 
             await fetchLinks();
+
+            // Restore scroll position after re-render
+            setTimeout(() => window.scrollTo(0, scrollY), 0);
         } catch (error) {
             console.error('Delete error:', error);
             alert('Failed to delete resource');
