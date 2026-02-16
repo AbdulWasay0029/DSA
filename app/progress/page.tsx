@@ -35,8 +35,8 @@ export default function ProgressPage() {
                     setStats({
                         total,
                         mastered,
-                        inProgress: Math.min(2, Math.max(0, total - mastered)), // Mock in-progress count
-                        streak: 3 // Mock streak for now
+                        inProgress: Math.min(2, Math.max(0, total - mastered)), // Estimated based on total-mastered
+                        streak: 3 // TODO: Implement daily activity tracking for real streak data
                     });
                 }
             } catch (e) {

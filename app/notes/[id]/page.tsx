@@ -110,7 +110,26 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
             });
 
             if (res.ok) {
-                setIsCompleted(!isCompleted);
+                const newCompletedState = !isCompleted;
+                setIsCompleted(newCompletedState);
+
+                // Update topic progress in real-time
+                const newCompletedNotes = newCompletedState
+                    ? [...completedNotes, params.id]
+                    : completedNotes.filter(id => id !== params.id);
+                setCompletedNotes(newCompletedNotes);
+
+                // Recalculate topic progress
+                if (note) {
+                    const currentTopics = note.tags?.filter(t => !['Easy', 'Medium', 'Hard'].includes(t)) || [];
+                    if (currentTopics.length > 0) {
+                        const topicNotes = allNotes.filter(n =>
+                            n.tags?.some(tag => currentTopics.includes(tag))
+                        );
+                        const topicCompleted = topicNotes.filter(n => newCompletedNotes.includes(n.id)).length;
+                        setTopicProgress({ completed: topicCompleted, total: topicNotes.length });
+                    }
+                }
             }
         } catch (e) {
             console.error('Failed to update progress:', e);
@@ -202,17 +221,6 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                         ) : (
                             <h1 className={styles.title}>{data.title}</h1>
                         )}
-
-                        <div className={styles.metaRow}>
-                            <div className={styles.metaItem}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-                                <span>20 min read</span>
-                            </div>
-                            <div className={styles.metaItem}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                                <span>1.2k views</span>
-                            </div>
-                        </div>
                     </header>
 
                     {/* Problem Statement */}
