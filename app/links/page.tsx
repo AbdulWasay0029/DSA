@@ -242,7 +242,7 @@ export default function LinksPage() {
                                             </div>
 
                                             {/* Admin Overlay */}
-                                            {isEditingMode && role === 'admin' && (
+                                            {role === 'admin' && (
                                                 <div className={styles.editOverlay} onClick={(e) => e.preventDefault()}>
                                                     <button className={styles.iconBtn} onClick={(e) => { e.preventDefault(); startEdit(link); }}>✎</button>
                                                     <button className={`${styles.iconBtn} ${styles.deleteBtn}`} onClick={(e) => { e.preventDefault(); handleDelete(link.id); }}>🗑</button>
