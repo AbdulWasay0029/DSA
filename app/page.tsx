@@ -1,12 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 import { motion } from 'framer-motion';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function Home() {
+    const { status } = useSession();
+
     return (
         <div className={styles.main}>
             {/* Background Orbs */}
@@ -37,10 +40,22 @@ export default function Home() {
                     </p>
 
                     <div className={styles.ctaGroup}>
-                        <Link href="/login" className={styles.primaryBtn}>
-                            Start Learning Free
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-                        </Link>
+                        {status === 'loading' ? (
+                            <button className={styles.primaryBtn} disabled>
+                                Loading...
+                            </button>
+                        ) : status === 'authenticated' ? (
+                            <Link href="/notes" className={styles.primaryBtn}>
+                                Continue Learning
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                            </Link>
+                        ) : (
+                            <Link href="/login" className={styles.primaryBtn}>
+                                Start Learning Free
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                            </Link>
+                        )}
+
                         <Link href="/notes" className={styles.secondaryBtn}>
                             Explore Curriculum
                         </Link>
