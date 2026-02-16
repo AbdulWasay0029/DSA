@@ -31,6 +31,6 @@ export async function GET() {
         return NextResponse.json({ success: true, message: `Seeded ${jsonNotes.length} notes.` });
 
     } catch (e) {
-        return NextResponse.json({ error: e.toString() }, { status: 500 });
+        return NextResponse.json({ error: String(e) }, { status: 500 });
     }
 }
