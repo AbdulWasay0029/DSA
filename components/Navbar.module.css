@@ -1,175 +1,229 @@
 .navbar {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 100;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 15, 0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.navContainer {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background: rgba(10, 10, 15, 0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Logo */
 .logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-decoration: none;
-    letter-spacing: -0.5px;
-}
-
-.navGroup {
     display: flex;
     align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.logoIcon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(138, 63, 252, 0.3);
+}
+
+.brandName {
+    background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Desktop Nav */
+.desktopNav {
+    display: flex;
     gap: 2.5rem;
 }
 
-.navLinks {
-    display: flex;
-    gap: 2rem;
-}
-
-.link {
-    color: #a0a0a0;
+.navLink {
+    position: relative;
+    color: #94a3b8;
     text-decoration: none;
     font-size: 0.95rem;
-    transition: color 0.2s ease;
     font-weight: 500;
+    transition: color 0.2s;
+    padding: 0.5rem 0;
 }
 
-.link:hover {
+.navLink:hover {
     color: #fff;
 }
 
-.active {
+.navLink.active {
     color: #fff;
+}
+
+.underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--primary);
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.loginBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.6rem 1.25rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
     font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s;
 }
 
-/* Auth Controls */
-.authControl {
+.loginBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* User Menu */
+.userMenu {
     position: relative;
+}
+
+.avatarBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
     display: flex;
     align-items: center;
 }
 
-.signInBtn {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 0.5rem 1.2rem;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.signInBtn:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.userMenu {
-    cursor: pointer;
-    position: relative;
-}
-
-.avatar {
-    width: 36px;
-    height: 36px;
+.avatarImg {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid rgba(138, 63, 252, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.1);
     transition: border-color 0.2s;
 }
 
-.userMenu:hover .avatar {
-    border-color: var(--primary);
-}
-
 .avatarPlaceholder {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background: var(--primary);
-    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    font-size: 1.1rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
+.avatarBtn:hover .avatarImg,
+.avatarBtn:hover .avatarPlaceholder {
+    border-color: var(--primary);
+}
+
+/* Dropdown */
 .dropdown {
     position: absolute;
-    top: 120%;
+    top: calc(100% + 1rem);
     right: 0;
-    background: #1a1a2e;
+    width: 240px;
+    background: #18181b;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 1rem;
-    min-width: 200px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.1s ease-out;
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.5);
+    z-index: 100;
 }
 
 .userInfo {
-    padding-bottom: 1rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .userName {
     margin: 0;
-    font-weight: 600;
     color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
 }
 
 .userEmail {
     margin: 0;
-    font-size: 0.8rem;
-    color: #888;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.menuDivider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0 1rem;
 }
 
 .menuItem {
-    display: block;
-    color: #ccc;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
     text-decoration: none;
-    padding: 0.5rem 0;
-    font-size: 0.9rem;
-    transition: color 0.2s;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    margin-bottom: 0.5rem;
+    transition: all 0.2s;
 }
 
 .menuItem:hover {
+    background: rgba(255, 255, 255, 0.05);
     color: #fff;
 }
 
-.signOutBtn {
-    width: 100%;
-    background: transparent;
-    color: #ff6b6b;
-    border: none;
-    text-align: left;
-    padding: 0.5rem 0;
-    cursor: pointer;
-    font-size: 0.9rem;
+.signOut {
+    color: #ef4444;
 }
 
-.signOutBtn:hover {
-    text-decoration: underline;
+.signOut:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
+@media (max-width: 768px) {
+    .desktopNav {
+        display: none;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .navContainer {
+        padding: 0 1.5rem;
     }
 }
