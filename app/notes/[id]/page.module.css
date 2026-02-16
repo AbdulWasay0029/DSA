@@ -34,11 +34,18 @@
 @media (max-width: 900px) {
     .contentWrapper {
         grid-template-columns: 1fr;
+        /* Stack vertically */
+    }
+
+    .sidebar {
+        position: static;
+        /* Unstick on mobile */
+        order: 2;
+        /* Move to bottom if Flex, but grid works differently. Grid items invoke order naturally */
     }
 }
 
 /* --- Main Content Area --- */
-
 .header {
     margin-bottom: 2.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -78,7 +85,7 @@
 }
 
 .title {
-    font-size: 2.75rem;
+    font-size: 3rem;
     font-weight: 800;
     letter-spacing: -0.02em;
     line-height: 1.1;
@@ -88,11 +95,20 @@
     -webkit-text-fill-color: transparent;
 }
 
+@media (max-width: 600px) {
+    .title {
+        font-size: 2rem;
+        /* Smaller title on mobile */
+    }
+}
+
 .metaRow {
     display: flex;
     gap: 2rem;
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.5);
+    flex-wrap: wrap;
+    /* Wrap badges on mobile */
 }
 
 .metaItem {
@@ -131,8 +147,10 @@
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    /* Prevent horizontal scroll */
     margin: 1.5rem 0 3rem;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+    max-width: 100%;
 }
 
 .codeBar {
@@ -193,7 +211,8 @@
 /* --- Sidebar (Curriculum & Progress) --- */
 .sidebar {
     position: sticky;
-    top: 2rem;
+    top: 6rem;
+    /* Adjust for fixed navbar */
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -249,7 +268,6 @@
 .contributorList {
     display: flex;
     align-items: center;
-    /* Overlap them slightly? */
 }
 
 .contributorAvatar {
@@ -259,7 +277,6 @@
     background: #333;
     border: 2px solid #000;
     margin-left: -8px;
-    /* overlap */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -326,7 +343,7 @@
 
 /* Edit Inputs (Minimal) */
 .inputTitle {
-    font-size: 2.75rem;
+    font-size: 2rem;
     font-weight: 800;
     background: transparent;
     border: none;
