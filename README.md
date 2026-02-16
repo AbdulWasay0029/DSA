@@ -1,86 +1,62 @@
-# 🚀 DSA Mastery Dashboard
+# AlgoStream 🚀
 
-![Project Status](https://img.shields.io/badge/status-active-success.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Next.js](https://img.shields.io/badge/Next.js-13-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+**AlgoStream** is a premium, community-driven platform for mastering Data Structures and Algorithms. Built as a sleek, modern alternative to traditional note-taking apps, it features a glassmorphic UI, progress tracking, and a curated curriculum.
 
-Welcome to the **DSA Mastery Dashboard**! This is a cutting-edge, visually stunning web application designed to help you track, organize, and master Data Structures and Algorithms. Built with the latest web technologies, it provides a seamless experience for reviewing handwritten notes, studying code solutions, and accessing curated problem links.
+![AlgoStream Preview](https://via.placeholder.com/800x400?text=AlgoStream+Dashboard)
 
 ## ✨ Features
 
--   **🎨 Premium Glassmorphism UI**: A modern, dark-themed aesthetic with blurry glass effects and smooth gradients.
--   **⚡ Dynamic Animations**: Powered by **Framer Motion** for a fluid and engaging user experience.
--   **📝 Rich Note Viewing**: Detailed views for problems with syntax-highlighted code solutions (Python/JS/C++).
--   **🔗 Curated Resources**: A dedicated section for tracking your LeetCode/Codeforces progress.
--   **📱 Fully Responsive**: Looks amazing on desktop, tablet, and mobile devices.
+- **Curated Curriculum**: Structured path from Arrays to Dynamic Programming.
+- **Premium Notes**: Detailed problem breakdowns with intuition, complexity analysis, and solution code blocks.
+- **Syntax Highlighting**: VS Code-style code snippets for easy reading.
+- **Progress Tracking**: Visualize your mastery with status indicators and difficulty badges.
+- **Resource Library**: A searchable collection of best external links (LeetCode, GFG, YouTube).
+- **Secure Auth**: Google Sign-In with Role-Based Access Control (Admin/Visitor).
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
--   **Framework**: [Next.js 13+](https://nextjs.org/) (App Router)
--   **Language**: [TypeScript](https://www.typescriptlang.org/)
--   **Styling**: CSS Modules with custom variables & gradients
--   **Animations**: [Framer Motion](https://www.framer.com/motion/)
--   **Syntax Highlighting**: [React Syntax Highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter)
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: CSS Modules with Glassmorphism
+- **Database**: MongoDB (via Mongoose)
+- **Auth**: NextAuth.js (Google Provider)
+- **Deployment**: Vercel
 
 ## 🚀 Getting Started
 
-Follow these steps to run the project locally:
-
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/AbdulWasay0029/DSA.git
+    git clone https://github.com/your-username/DSA.git
     cd DSA
     ```
 
 2.  **Install dependencies:**
     ```bash
     npm install
-    # or
-    yarn install
     ```
 
-3.  **Run the development server:**
+3.  **Set up Environment Variables:**
+    Create a `.env.local` file in the root directory:
+    ```env
+    MONGODB_URI=your_mongodb_connection_string
+    NEXTAUTH_URL=http://localhost:3000
+    NEXTAUTH_SECRET=your_nextauth_secret_key
+    GOOGLE_CLIENT_ID=your_google_client_id
+    GOOGLE_CLIENT_SECRET=your_google_client_secret
+    ADMIN_EMAILS=admin@example.com
+    ```
+
+4.  **Run the development server:**
     ```bash
     npm run dev
-    # or
-    yarn dev
     ```
 
-4.  **Open your browser:**
-    Navigate to [http://localhost:3000](http://localhost:3000) to see the app in action.
-
-## 📂 Project Structure
-
-```
-├── app/                  # App Router pages and layouts
-│   ├── links/            # Links page
-│   ├── notes/            # Notes listing and detail pages
-│   ├── globals.css       # Global styles and variables
-│   ├── layout.tsx        # Root layout with Navbar/Footer
-│   └── page.tsx          # Home landing page
-├── components/           # Reusable UI components
-│   ├── Navbar.tsx        # Navigation bar
-│   ├── Footer.tsx        # Application footer
-│   └── NoteCard.tsx      # Card component for note items
-├── data/                 # Static data for notes and links
-└── public/               # Static assets
-```
+5.  Open [http://localhost:3000](http://localhost:3000) to see the app.
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you have better solutions, new problem links, or UI improvements, feel free to:
-
-1.  Fork the project.
-2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
+This project is currently for personal study and small group collaboration. Suggestions are welcome via the "Suggest Improvement" feature on any note page.
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-> Built with ❤️ by [Abdul Wasay](https://github.com/AbdulWasay0029)
+Private / Personal Use.
