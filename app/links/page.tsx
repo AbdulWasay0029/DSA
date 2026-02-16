@@ -228,6 +228,7 @@ export default function LinksPage() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.05 }}
+                                        style={{ position: 'relative' }}
                                     >
                                         <a href={link.url} target="_blank" rel="noopener noreferrer" className={styles.card}>
                                             <div className={styles.cardHeader}>
@@ -241,14 +242,15 @@ export default function LinksPage() {
                                                 <span>{link.platform || 'Resource'}</span>
                                             </div>
 
-                                            {/* Admin Overlay */}
-                                            {role === 'admin' && (
-                                                <div className={styles.editOverlay} onClick={(e) => e.preventDefault()}>
-                                                    <button className={styles.iconBtn} onClick={(e) => { e.preventDefault(); startEdit(link); }}>✎</button>
-                                                    <button className={`${styles.iconBtn} ${styles.deleteBtn}`} onClick={(e) => { e.preventDefault(); handleDelete(link.id); }}>🗑</button>
-                                                </div>
-                                            )}
                                         </a>
+
+                                        {/* Admin Overlay - OUTSIDE the link */}
+                                        {role === 'admin' && (
+                                            <div className={styles.editOverlay}>
+                                                <button className={styles.iconBtn} onClick={() => startEdit(link)}>✎</button>
+                                                <button className={`${styles.iconBtn} ${styles.deleteBtn}`} onClick={() => handleDelete(link.id)}>🗑</button>
+                                            </div>
+                                        )}
                                     </motion.div>
                                 ))}
                             </div>
