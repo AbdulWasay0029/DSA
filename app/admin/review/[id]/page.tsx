@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import styles from '../../[id]/page.module.css'; // Reusing detail styles
+import styles from '../../../notes/[id]/page.module.css'; // Reusing detail styles
 import { Suggestion } from '@/lib/storage';
 import NoteDetailPage from '@/app/notes/[id]/page'; // HACK: We could reuse the component but logic differs. Let's rebuild for safety.
 import SimpleMarkdown from '@/components/SimpleMarkdown';
@@ -82,7 +82,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
             <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', borderLeft: '4px solid var(--primary)' }}>
                 <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#fff' }}>Reviewing Suggestion</h2>
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', fontSize: '0.9rem', color: '#888' }}>
-                    <span>Submitted by: {suggestion.submittedBy || 'Anonymous'}</span>
+                    <span>Submitted by: {(suggestion as any).submittedBy || 'Anonymous'}</span>
                     <span>Type: {suggestion.originalId ? 'Edit to Existing Note' : 'New Note Proposal'}</span>
                 </div>
             </div>
