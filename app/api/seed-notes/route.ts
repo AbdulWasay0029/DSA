@@ -75,7 +75,7 @@ async function seedNotes() {
     const dbOperations = [];
     const createdNotes = [];
 
-    for (const [key, data] of groupedNotes.entries()) {
+    for (const [key, data] of Array.from(groupedNotes.entries())) {
         const id = key.replace(/\|/g, '-').replace(/\//g, '').replace(/\s+/g, '-');
         const tags = inferTags(data.title, data.notes);
 
