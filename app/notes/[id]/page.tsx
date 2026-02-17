@@ -139,6 +139,29 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
         }
     };
 
+    // Handle Delete
+    const handleDelete = async () => {
+        if (!confirm('Are you sure you want to delete this note? This action cannot be undone.')) return;
+
+        try {
+            const res = await fetch('/api/notes', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: params.id })
+            });
+
+            if (res.ok) {
+                // Redirect to notes list
+                window.location.href = '/notes';
+            } else {
+                alert('Failed to delete note');
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Error deleting note');
+        }
+    };
+
     // Handle Save
     const handleSave = async () => {
         if (!editData) return;
@@ -439,12 +462,17 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
             <div className={styles.editControls}>
                 {isEditing ? (
                     <>
-                        <button className={styles.fabBtn} style={{ background: '#ef4444' }} onClick={() => setIsEditing(false)}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                        </button>
-                        <button className={styles.fabBtn} style={{ background: '#22c55e' }} onClick={handleSave}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
-                        </button>
+                        <>
+                            <button className={styles.fabBtn} style={{ background: '#ef4444' }} onClick={handleDelete} title="Delete Note">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /></svg>
+                            </button>
+                            <button className={styles.fabBtn} style={{ background: '#f59e0b' }} onClick={() => setIsEditing(false)} title="Cancel Edit">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                            </button>
+                            <button className={styles.fabBtn} style={{ background: '#22c55e' }} onClick={handleSave} title="Save Changes">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
+                            </button>
+                        </>
                     </>
                 ) : (
                     <button className={styles.fabBtn} onClick={() => setIsEditing(true)}>
