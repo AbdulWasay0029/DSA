@@ -124,19 +124,89 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
                     <div style={{ opacity: 0.6 }}>
                         <h3 style={{ color: '#888', borderBottom: '1px solid #444', paddingBottom: '0.5rem' }}>Original</h3>
                         <h1>{originalNote.title}</h1>
+                        <div style={{ marginBottom: '1rem' }}>
+                            <strong>Difficulty:</strong> {originalNote.difficulty || 'Medium'}
+                        </div>
+                        <div style={{ marginBottom: '1rem' }}>
+                            <strong>Tags:</strong> {originalNote.tags?.join(', ') || 'None'}
+                        </div>
                         <SimpleMarkdown content={originalNote.fullDescription} />
-                        {/* Simplified list for other fields */}
-                        <h4>Solutions: {originalNote.solutions.length}</h4>
+                        <h4>Solutions: {originalNote.solutions?.length || 0}</h4>
+                        {originalNote.solutions?.map((sol: any, i: number) => (
+                            <div key={i} style={{ marginBottom: '1rem', padding: '0.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
+                                <strong>{sol.title}</strong> ({sol.language})
+                            </div>
+                        ))}
                     </div>
 
                     {/* RIGHT: PROPOSED */}
                     <div>
-                        <h3 style={{ color: '#4ade80', borderBottom: '1px solid #444', paddingBottom: '0.5rem' }}>Proposed</h3>
-                        <h1 style={{ color: suggestion.title !== originalNote.title ? '#4ade80' : 'inherit' }}>{suggestion.title}</h1>
-                        <div style={{ border: suggestion.fullDescription !== originalNote.fullDescription ? '1px solid #4ade80' : 'none', padding: '0.5rem', borderRadius: '8px' }}>
+                        <h3 style={{ color: '#4ade80', borderBottom: '1px solid #444', paddingBottom: '0.5rem' }}>Proposed Changes</h3>
+
+                        {/* Title - highlight if changed */}
+                        <h1 style={{
+                            color: suggestion.title !== originalNote.title ? '#4ade80' : 'inherit',
+                            background: suggestion.title !== originalNote.title ? 'rgba(74, 222, 128, 0.1)' : 'transparent',
+                            padding: suggestion.title !== originalNote.title ? '0.5rem' : '0',
+                            borderRadius: '8px'
+                        }}>
+                            {suggestion.title}
+                            {suggestion.title !== originalNote.title && <span style={{ fontSize: '0.7rem', marginLeft: '0.5rem' }}>✏️ Changed</span>}
+                        </h1>
+
+                        {/* Difficulty - highlight if changed */}
+                        <div style={{
+                            marginBottom: '1rem',
+                            background: (suggestion as any).difficulty !== originalNote.difficulty ? 'rgba(74, 222, 128, 0.1)' : 'transparent',
+                            padding: '0.5rem',
+                            borderRadius: '8px'
+                        }}>
+                            <strong>Difficulty:</strong> {(suggestion as any).difficulty || 'Medium'}
+                            {(suggestion as any).difficulty !== originalNote.difficulty && <span style={{ color: '#4ade80', marginLeft: '0.5rem' }}>✏️</span>}
+                        </div>
+
+                        {/* Tags - highlight if changed */}
+                        <div style={{
+                            marginBottom: '1rem',
+                            background: JSON.stringify(suggestion.tags) !== JSON.stringify(originalNote.tags) ? 'rgba(74, 222, 128, 0.1)' : 'transparent',
+                            padding: '0.5rem',
+                            borderRadius: '8px'
+                        }}>
+                            <strong>Tags:</strong> {suggestion.tags?.join(', ') || 'None'}
+                            {JSON.stringify(suggestion.tags) !== JSON.stringify(originalNote.tags) && <span style={{ color: '#4ade80', marginLeft: '0.5rem' }}>✏️</span>}
+                        </div>
+
+                        {/* Description - highlight if changed */}
+                        <div style={{
+                            border: suggestion.fullDescription !== originalNote.fullDescription ? '2px solid #4ade80' : 'none',
+                            padding: '0.5rem',
+                            borderRadius: '8px',
+                            background: suggestion.fullDescription !== originalNote.fullDescription ? 'rgba(74, 222, 128, 0.05)' : 'transparent'
+                        }}>
+                            {suggestion.fullDescription !== originalNote.fullDescription && (
+                                <div style={{ color: '#4ade80', marginBottom: '0.5rem', fontSize: '0.9rem' }}>✏️ Description Changed</div>
+                            )}
                             <SimpleMarkdown content={suggestion.fullDescription} />
                         </div>
-                        <h4>Solutions: {suggestion.solutions.length}</h4>
+
+                        {/* Solutions - highlight if changed */}
+                        <h4>
+                            Solutions: {suggestion.solutions?.length || 0}
+                            {suggestion.solutions?.length !== originalNote.solutions?.length && (
+                                <span style={{ color: '#4ade80', marginLeft: '0.5rem' }}>✏️ Count Changed</span>
+                            )}
+                        </h4>
+                        {suggestion.solutions?.map((sol: any, i: number) => (
+                            <div key={i} style={{
+                                marginBottom: '1rem',
+                                padding: '0.5rem',
+                                background: 'rgba(74, 222, 128, 0.1)',
+                                borderRadius: '8px',
+                                border: '1px solid rgba(74, 222, 128, 0.3)'
+                            }}>
+                                <strong>{sol.title}</strong> ({sol.language})
+                            </div>
+                        ))}
                     </div>
                 </div>
             ) : (
