@@ -3,20 +3,30 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 import NoteCard from '@/components/NoteCard';
 import { Note } from '@/data/notes';
 
 export default function NotesPage() {
     const { data: session } = useSession();
+    const searchParams = useSearchParams();
+    const tagParam = searchParams.get('tag');
+
     const role = (session?.user as any)?.role || 'visitor';
     const [notes, setNotes] = useState<Note[]>([]);
     const [loading, setLoading] = useState(true);
 
     // Filters
     const [filterDiff, setFilterDiff] = useState<string | null>(null);
-    const [filterTag, setFilterTag] = useState<string | null>(null);
+    const [filterTag, setFilterTag] = useState<string | null>(tagParam); // Initialize from URL
     const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        if (tagParam) {
+            setFilterTag(tagParam);
+        }
+    }, [tagParam]);
 
     useEffect(() => {
         const fetchNotes = async () => {

@@ -10,6 +10,7 @@ export default function ProgressPage() {
     const { data: session } = useSession();
     const [stats, setStats] = useState({ total: 0, mastered: 0, inProgress: 0, streak: 0 });
     const [loading, setLoading] = useState(true);
+    const [topics, setTopics] = useState<any[]>([]);
 
     useEffect(() => {
         if (!session) {
@@ -38,6 +39,45 @@ export default function ProgressPage() {
                         inProgress: Math.min(2, Math.max(0, total - mastered)), // Estimated based on total-mastered
                         streak: 3 // TODO: Implement daily activity tracking for real streak data
                     });
+
+                    // Process Tags for Topics
+                    const tagCounts: { [key: string]: number } = {};
+                    notesData.forEach((note: any) => {
+                        if (note.tags && Array.isArray(note.tags)) {
+                            note.tags.forEach((tag: string) => {
+                                // Filter out difficulty tags and metadata like "Incomplete"
+                                if (!['Easy', 'Medium', 'Hard', 'Incomplete', 'Important'].includes(tag)) {
+                                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                                }
+                            });
+                        }
+                    });
+
+                    // Convert to array and sort
+                    const sortedTopics = Object.entries(tagCounts)
+                        .sort(([, a], [, b]) => b - a)
+                        .map(([name, count], i) => {
+                            // Deterministic colors/icons
+                            const colors = ['#4ade80', '#2196f3', '#f59e0b', '#ec4899', '#8a3ffc', '#06b6d4'];
+                            const icons = ['📊', '🔤', '🔢', '∑', '🌲', '🕸️', '💾'];
+
+                            let icon = icons[i % icons.length];
+                            if (name.toLowerCase().includes('array')) icon = '📊';
+                            else if (name.toLowerCase().includes('string')) icon = '🔤';
+                            else if (name.toLowerCase().includes('tree')) icon = '🌲';
+                            else if (name.toLowerCase().includes('graph')) icon = '🕸️';
+                            else if (name.toLowerCase().includes('dynamic')) icon = '🧠';
+                            else if (name.toLowerCase().includes('bit')) icon = '010';
+
+                            return {
+                                name,
+                                count,
+                                icon,
+                                color: colors[i % colors.length]
+                            };
+                        });
+
+                    setTopics(sortedTopics);
                 }
             } catch (e) {
                 console.error('Failed to fetch progress:', e);
@@ -67,18 +107,11 @@ export default function ProgressPage() {
         );
     }
 
-    const topics = [
-        { name: 'Arrays', count: 5, icon: '📊', color: '#4ade80' },
-        { name: 'Strings', count: 3, icon: 'abc', color: '#2196f3' },
-        { name: 'Bit Manipulation', count: 6, icon: '010', color: '#f59e0b' },
-        { name: 'Math', count: 3, icon: '∑', color: '#ec4899' },
-    ];
-
     return (
         <div className={styles.container}>
             <header className={styles.header}>
                 <h1>Dashboard</h1>
-                <p>Welcome back, {session.user?.name?.split(' ')[0]}. You're doing great!</p>
+                <p>Welcome back, {(session.user as any)?.name?.split(' ')[0] || 'User'}. You're doing great!</p>
             </header>
 
             {/* Stats Grid */}
@@ -123,18 +156,22 @@ export default function ProgressPage() {
             {/* Topic Cards */}
             <div className={styles.section}>
                 <h3>Study by Topic</h3>
-                <div className={styles.topicGrid}>
-                    {topics.map((topic, i) => (
-                        <Link href={`/notes?tag=${topic.name}`} key={i} className={styles.topicCard}>
-                            <div className={styles.topicIcon} style={{ color: topic.color }}>{topic.icon}</div>
-                            <div className={styles.topicInfo}>
-                                <h4>{topic.name}</h4>
-                                <span>{topic.count} Notes</span>
-                            </div>
-                            <div className={styles.arrow}>&rarr;</div>
-                        </Link>
-                    ))}
-                </div>
+                {topics.length > 0 ? (
+                    <div className={styles.topicGrid}>
+                        {topics.map((topic, i) => (
+                            <Link href={`/notes?tag=${encodeURIComponent(topic.name)}`} key={i} className={styles.topicCard}>
+                                <div className={styles.topicIcon} style={{ color: topic.color }}>{topic.icon}</div>
+                                <div className={styles.topicInfo}>
+                                    <h4>{topic.name}</h4>
+                                    <span>{topic.count} Notes</span>
+                                </div>
+                                <div className={styles.arrow}>&rarr;</div>
+                            </Link>
+                        ))}
+                    </div>
+                ) : (
+                    <p style={{ color: '#888', fontStyle: 'italic' }}>No topics found yet. Add tags to your notes to populate this section!</p>
+                )}
             </div>
         </div>
     );
