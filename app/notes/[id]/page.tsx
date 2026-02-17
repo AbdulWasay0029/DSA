@@ -452,53 +452,6 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                         </div>
                     )}
 
-                    {/* Tips & Tricks */}
-                    {(isEditing || (data.tips && data.tips.length > 0)) && (
-                        <>
-                            <div className={styles.sectionTitle}>💡 Tips & Tricks</div>
-                            {isEditing ? (
-                                <div style={{ marginBottom: '1.5rem' }}>
-                                    {data.tips?.map((tip, i) => (
-                                        <div key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                                            <input
-                                                className={styles.input}
-                                                value={tip}
-                                                onChange={e => {
-                                                    const newTips = [...(data.tips || [])];
-                                                    newTips[i] = e.target.value;
-                                                    setEditData({ ...data, tips: newTips });
-                                                }}
-                                                placeholder="Enter a tip..."
-                                                style={{ flex: 1 }}
-                                            />
-                                            <button
-                                                onClick={() => {
-                                                    const newTips = data.tips?.filter((_, idx) => idx !== i) || [];
-                                                    setEditData({ ...data, tips: newTips });
-                                                }}
-                                                style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer' }}
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    ))}
-                                    <button
-                                        onClick={() => setEditData({ ...data, tips: [...(data.tips || []), ''] })}
-                                        style={{ background: 'var(--primary)', color: '#fff', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer', marginTop: '0.5rem' }}
-                                    >
-                                        + Add Tip
-                                    </button>
-                                </div>
-                            ) : (
-                                <ul style={{ marginBottom: '1.5rem', paddingLeft: '1.5rem' }}>
-                                    {data.tips?.map((tip, i) => (
-                                        <li key={i} style={{ color: '#aaa', marginBottom: '0.5rem' }}>{tip}</li>
-                                    ))}
-                                </ul>
-                            )}
-                        </>
-                    )}
-
                     {/* Examples */}
                     {(isEditing || (data.examples && data.examples.length > 0)) && (
                         <>
@@ -779,19 +732,54 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                     )}
 
                     {/* Tips Card */}
-                    {data.tips && data.tips.length > 0 && (
+                    {(data.tips && data.tips.length > 0) || isEditing ? (
                         <div className={styles.sidebarCard}>
                             <h3 className={styles.cardTitle}>Quick Tips</h3>
-                            <ul className={styles.tipList}>
-                                {data.tips.map((tip, i) => (
-                                    <li key={i} className={styles.tipItem}>
-                                        <svg className={styles.tipIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z" /><path d="M9 21h6" /></svg>
-                                        <span>{tip}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                            {isEditing ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                    {data.tips?.map((tip, i) => (
+                                        <div key={i} style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <input
+                                                className={styles.input}
+                                                value={tip}
+                                                onChange={e => {
+                                                    const newTips = [...(data.tips || [])];
+                                                    newTips[i] = e.target.value;
+                                                    setEditData({ ...data, tips: newTips });
+                                                }}
+                                                placeholder="Enter a tip..."
+                                                style={{ flex: 1, fontSize: '0.85rem', padding: '0.5rem' }}
+                                            />
+                                            <button
+                                                onClick={() => {
+                                                    const newTips = data.tips?.filter((_, idx) => idx !== i) || [];
+                                                    setEditData({ ...data, tips: newTips });
+                                                }}
+                                                style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '0.3rem 0.6rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' }}
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <button
+                                        onClick={() => setEditData({ ...data, tips: [...(data.tips || []), ''] })}
+                                        style={{ background: 'var(--primary)', color: '#fff', border: 'none', padding: '0.5rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem', marginTop: '0.25rem' }}
+                                    >
+                                        + Add Tip
+                                    </button>
+                                </div>
+                            ) : (
+                                <ul className={styles.tipList}>
+                                    {data.tips.map((tip, i) => (
+                                        <li key={i} className={styles.tipItem}>
+                                            <svg className={styles.tipIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z" /><path d="M9 21h6" /></svg>
+                                            <span>{tip}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
-                    )}
+                    ) : null}
                 </motion.aside>
             </div>
 
