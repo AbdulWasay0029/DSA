@@ -9,25 +9,7 @@ import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 import SimpleMarkdown from '@/components/SimpleMarkdown';
 
-// --- Types ---
-interface Note {
-    id: string;
-    title: string;
-    description: string;
-    fullDescription: string;
-    tags?: string[];
-    tips?: string[];
-    examples?: { input: string; output?: string; explanation?: string }[];
-    solutions: {
-        title: string;
-        language: string;
-        code: string;
-        isPseudo?: boolean;
-        complexity?: { time?: string; space?: string; analysis?: string };
-    }[];
-    difficulty?: 'Easy' | 'Medium' | 'Hard';
-    category?: string;
-}
+import { Note } from '@/data/notes';
 
 export default function NoteDetailPage({ params }: { params: { id: string } }) {
     const { data: session } = useSession();
