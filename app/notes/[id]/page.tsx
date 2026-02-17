@@ -173,16 +173,22 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
     // Handle Save
     const handleSave = async () => {
         if (!editData) return;
+
+        console.log('Saving editData:', editData);
+
         const endpoint = role === 'admin' ? '/api/notes' : '/api/suggestions';
         const method = role === 'admin' ? 'PUT' : 'POST';
         const body = role === 'admin' ? editData : { ...editData, originalId: editData.id };
 
         try {
-            await fetch(endpoint, {
+            const res = await fetch(endpoint, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             });
+
+            console.log('Save response:', res.status, await res.text());
+
             if (role === 'admin') {
                 setNote(editData);
                 setIsEditing(false);
@@ -191,6 +197,7 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                 setIsEditing(false);
             }
         } catch (e) {
+            console.error('Save error:', e);
             alert('Failed to save.');
         }
     };

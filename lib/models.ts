@@ -30,6 +30,8 @@ const NoteSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     fullDescription: { type: String, default: '' },
+    difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Medium' },
+    category: { type: String, default: '' }, // For date/session grouping
     tags: [String],
     tips: [String],
     examples: [ExampleSchema],
@@ -45,6 +47,8 @@ const SuggestionSchema = new Schema({
     title: String,
     description: String,
     fullDescription: String,
+    difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'] },
+    category: String,
     tags: [String],
     tips: [String],
     examples: [ExampleSchema],
