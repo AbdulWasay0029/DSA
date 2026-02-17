@@ -105,11 +105,11 @@ async function seedNotes() {
         dbOperations.push(
             NoteModel.findOneAndUpdate(
                 { id: id },
-                noteDoc,
+                noteData,
                 { upsert: true, new: true }
             )
         );
-        createdNotes.push(noteDoc);
+        createdNotes.push(noteData);
     }
 
     await Promise.all(dbOperations);
