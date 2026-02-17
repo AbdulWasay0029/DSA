@@ -175,6 +175,50 @@ export default function CreateNotePage() {
                         Separate tags with commas. Include topic and difficulty.
                     </p>
                 </div>
+
+                {/* Examples */}
+                <div className={styles.card}>
+                    <h3>📝 Examples</h3>
+                    <div className={styles.tipsList}>
+                        {data.examples?.map((ex, i) => (
+                            <div key={i} className={styles.tipItem} style={{ flexDirection: 'column', background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                    <span style={{ color: '#aaa', fontSize: '0.9rem' }}>Example {i + 1}</span>
+                                    <button className={styles.deleteBtn} onClick={() => {
+                                        const newExamples = [...(data.examples || [])];
+                                        newExamples.splice(i, 1);
+                                        setData({ ...data, examples: newExamples });
+                                    }}>Remove</button>
+                                </div>
+                                <textarea
+                                    className={styles.textarea}
+                                    style={{ minHeight: '80px', marginBottom: '0.5rem', fontFamily: 'monospace' }}
+                                    value={ex.input}
+                                    onChange={e => {
+                                        const newExamples = [...(data.examples || [])];
+                                        newExamples[i] = { ...newExamples[i], input: e.target.value };
+                                        setData({ ...data, examples: newExamples });
+                                    }}
+                                    placeholder="Input (e.g. nums = [2,7,11,15], target = 9)"
+                                />
+                                <textarea
+                                    className={styles.textarea}
+                                    style={{ minHeight: '60px', fontFamily: 'monospace' }}
+                                    value={ex.output || ''}
+                                    onChange={e => {
+                                        const newExamples = [...(data.examples || [])];
+                                        newExamples[i] = { ...newExamples[i], output: e.target.value };
+                                        setData({ ...data, examples: newExamples });
+                                    }}
+                                    placeholder="Output (e.g. [0,1])"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <button className={styles.addBtn} onClick={() => setData({ ...data, examples: [...(data.examples || []), { input: '', output: '' }] })}>
+                        + Add Example
+                    </button>
+                </div>
             </div>
 
             {/* Solutions */}

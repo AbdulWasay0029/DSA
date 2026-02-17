@@ -456,8 +456,9 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                                     ×
                                                 </button>
                                             </div>
-                                            <input
-                                                className={styles.input}
+                                            <textarea
+                                                className={styles.inputArea}
+                                                style={{ minHeight: '80px', marginBottom: '0.5rem', fontFamily: 'monospace' }}
                                                 value={ex.input}
                                                 onChange={e => {
                                                     const newExamples = [...(data.examples || [])];
@@ -465,10 +466,10 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                                     setEditData({ ...data, examples: newExamples });
                                                 }}
                                                 placeholder="Input"
-                                                style={{ marginBottom: '0.5rem' }}
                                             />
-                                            <input
-                                                className={styles.input}
+                                            <textarea
+                                                className={styles.inputArea}
+                                                style={{ minHeight: '60px', marginBottom: '0.5rem', fontFamily: 'monospace' }}
                                                 value={ex.output || ''}
                                                 onChange={e => {
                                                     const newExamples = [...(data.examples || [])];
@@ -476,7 +477,6 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                                     setEditData({ ...data, examples: newExamples });
                                                 }}
                                                 placeholder="Output"
-                                                style={{ marginBottom: '0.5rem' }}
                                             />
                                             <textarea
                                                 className={styles.inputArea}
