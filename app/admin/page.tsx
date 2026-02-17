@@ -15,13 +15,16 @@ interface Suggestion {
 }
 
 export default function AdminDashboard() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
     const role = (session?.user as any)?.role || 'visitor';
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Wait for session to load
+        if (status === 'loading') return;
+
         if (role !== 'admin') {
             router.push('/');
             return;
@@ -42,9 +45,9 @@ export default function AdminDashboard() {
         };
 
         fetchSuggestions();
-    }, [role, router]);
+    }, [role, router, status]);
 
-    if (loading) {
+    if (status === 'loading' || loading) {
         return (
             <div className={styles.container}>
                 <div className="spinner"></div>
