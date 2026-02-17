@@ -42,6 +42,13 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
     const [completionLoading, setCompletionLoading] = useState(false);
     const [completedNotes, setCompletedNotes] = useState<string[]>([]);
     const [topicProgress, setTopicProgress] = useState({ completed: 0, total: 0 });
+    const [tagInput, setTagInput] = useState('');
+    const [showTagSuggestions, setShowTagSuggestions] = useState(false);
+
+    // Common tags for autocomplete
+    const commonTags = ['Easy', 'Medium', 'Hard', 'Arrays', 'Strings', 'Recursion', 'Bit Manipulation',
+        'Sorting', 'Searching', 'Stack/Queue', 'Graph/Tree', 'DP', 'Backtracking',
+        'Two Pointers', 'Sliding Window', 'Hashing', 'Math', 'Greedy', 'Matrix', 'Variations'];
 
     // Fetch Note
     useEffect(() => {
@@ -273,13 +280,133 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                         placeholder="Problem Title"
                                         style={{ width: '100%' }}
                                     />
-                                    <input
-                                        className={styles.inputTitle}
-                                        style={{ fontSize: '0.9rem', marginTop: '0.5rem', width: '100%' }}
-                                        placeholder="Tags (comma separated)"
-                                        value={data.tags?.join(', ') || ''}
-                                        onChange={e => setEditData({ ...data, tags: e.target.value.split(',').map(t => t.trim()) })}
-                                    />
+
+                                    {/* Tag Selector with Chips */}
+                                    <div style={{ marginTop: '0.5rem', width: '100%' }}>
+                                        <div style={{
+                                            display: 'flex',
+                                            flexWrap: 'wrap',
+                                            gap: '0.5rem',
+                                            padding: '0.5rem',
+                                            background: 'rgba(0,0,0,0.2)',
+                                            borderRadius: '8px',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            minHeight: '50px'
+                                        }}>
+                                            {data.tags?.map((tag, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    style={{
+                                                        background: 'var(--primary)',
+                                                        color: '#fff',
+                                                        padding: '0.3rem 0.6rem',
+                                                        borderRadius: '20px',
+                                                        fontSize: '0.85rem',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '0.3rem'
+                                                    }}
+                                                >
+                                                    {tag}
+                                                    <button
+                                                        onClick={() => {
+                                                            const newTags = data.tags?.filter((_, i) => i !== idx) || [];
+                                                            setEditData({ ...data, tags: newTags });
+                                                        }}
+                                                        style={{
+                                                            background: 'none',
+                                                            border: 'none',
+                                                            color: '#fff',
+                                                            cursor: 'pointer',
+                                                            padding: 0,
+                                                            fontSize: '1.1rem',
+                                                            lineHeight: 1
+                                                        }}
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </span>
+                                            ))}
+                                            <input
+                                                type="text"
+                                                placeholder="Add tags..."
+                                                value={tagInput}
+                                                onChange={e => setTagInput(e.target.value)}
+                                                onFocus={() => setShowTagSuggestions(true)}
+                                                onBlur={() => setTimeout(() => setShowTagSuggestions(false), 200)}
+                                                onKeyDown={e => {
+                                                    if (e.key === 'Enter' && tagInput.trim()) {
+                                                        e.preventDefault();
+                                                        const newTag = tagInput.trim();
+                                                        if (!data.tags?.includes(newTag)) {
+                                                            setEditData({ ...data, tags: [...(data.tags || []), newTag] });
+                                                        }
+                                                        setTagInput('');
+                                                    }
+                                                }}
+                                                style={{
+                                                    background: 'transparent',
+                                                    border: 'none',
+                                                    color: '#fff',
+                                                    outline: 'none',
+                                                    flex: 1,
+                                                    minWidth: '120px',
+                                                    fontSize: '0.9rem'
+                                                }}
+                                            />
+                                        </div>
+
+                                        {/* Tag Suggestions */}
+                                        {showTagSuggestions && (
+                                            <div style={{
+                                                marginTop: '0.5rem',
+                                                background: 'rgba(0,0,0,0.9)',
+                                                border: '1px solid rgba(255,255,255,0.2)',
+                                                borderRadius: '8px',
+                                                padding: '0.5rem',
+                                                display: 'flex',
+                                                flexWrap: 'wrap',
+                                                gap: '0.3rem',
+                                                maxHeight: '150px',
+                                                overflowY: 'auto'
+                                            }}>
+                                                {commonTags
+                                                    .filter(tag => !data.tags?.includes(tag))
+                                                    .filter(tag => tag.toLowerCase().includes(tagInput.toLowerCase()))
+                                                    .map(tag => (
+                                                        <button
+                                                            key={tag}
+                                                            onMouseDown={(e) => {
+                                                                e.preventDefault();
+                                                                setEditData({ ...data, tags: [...(data.tags || []), tag] });
+                                                                setTagInput('');
+                                                            }}
+                                                            style={{
+                                                                background: 'rgba(255,255,255,0.1)',
+                                                                border: '1px solid rgba(255,255,255,0.2)',
+                                                                color: '#aaa',
+                                                                padding: '0.3rem 0.6rem',
+                                                                borderRadius: '15px',
+                                                                fontSize: '0.8rem',
+                                                                cursor: 'pointer',
+                                                                transition: 'all 0.2s'
+                                                            }}
+                                                            onMouseEnter={e => {
+                                                                e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                                                                e.currentTarget.style.color = '#fff';
+                                                            }}
+                                                            onMouseLeave={e => {
+                                                                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                                                                e.currentTarget.style.color = '#aaa';
+                                                            }}
+                                                        >
+                                                            + {tag}
+                                                        </button>
+                                                    ))
+                                                }
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             ) : (
                                 <h1 className={styles.title}>{data.title}</h1>

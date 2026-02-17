@@ -54,3 +54,24 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: 'Failed to update note' }, { status: 500 });
     }
 }
+
+export async function DELETE(request: Request) {
+    const session = await getServerSession(authOptions);
+    if (!session || (session.user as any).role !== 'admin') {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    await dbConnect();
+    const body = await request.json();
+
+    try {
+        const deleted = await NoteModel.findOneAndDelete({ id: body.id });
+        if (!deleted) {
+            return NextResponse.json({ error: 'Note not found' }, { status: 404 });
+        }
+        return NextResponse.json({ success: true });
+    } catch (e) {
+        return NextResponse.json({ error: 'Failed to delete note' }, { status: 500 });
+    }
+}
+
