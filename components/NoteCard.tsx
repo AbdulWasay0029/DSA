@@ -5,8 +5,8 @@ import styles from './NoteCard.module.css';
 import { Note } from '@/data/notes';
 
 export default function NoteCard({ note }: { note: Note }) {
-    // Determine difficulty/status (Mock logic for now)
-    const difficulty = note.tags?.find(t => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
+    // Use difficulty field, fallback to tags if not set
+    const difficulty = note.difficulty || note.tags?.find(t => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
     const isCompleted = false; // TODO: Hook up to user progress
 
     return (
