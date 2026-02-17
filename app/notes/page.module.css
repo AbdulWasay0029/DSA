@@ -45,79 +45,95 @@
     box-shadow: 0 6px 20px rgba(138, 63, 252, 0.4);
 }
 
-/* Filter Bar */
-.filterBar {
+/* Controls & Filters */
+.controls {
     display: flex;
     gap: 1rem;
-    margin-bottom: 3rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.searchInput {
+    flex: 1;
+    min-width: 250px;
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.filterGroup {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.3rem;
+    border-radius: 12px;
 }
 
 .filterBtn {
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #64748b;
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
+    border: none;
+    color: #94a3b8;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s;
 }
 
-.filterBtn:hover,
-.filterBtn.active {
-    background: rgba(255, 255, 255, 0.1);
+.filterBtn:hover {
     color: #fff;
-    border-color: #fff;
 }
 
-.active {
+.filterBtn.active {
     background: #fff;
     color: #000;
+    font-weight: 600;
 }
 
-/* Syllabus List */
-.topicSection {
-    margin-bottom: 3rem;
-}
-
-.topicHeader {
+.tagCloud {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 1rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.topicTitle {
-    font-size: 1.5rem;
+.tagChip {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.tagChip:hover {
+    border-color: rgba(255, 255, 255, 0.3);
     color: #fff;
-    margin: 0;
-    position: relative;
-    padding-left: 1rem;
 }
 
-.topicTitle::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 1.2rem;
+.activeTag {
     background: var(--primary);
-    border-radius: 4px;
+    border-color: var(--primary);
+    color: #fff;
 }
 
-.topicCount {
-    color: #64748b;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
+/* Grid */
 .notesGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
 }

@@ -12,7 +12,11 @@ export default function NotesPage() {
     const role = (session?.user as any)?.role || 'visitor';
     const [notes, setNotes] = useState<Note[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // Filters
     const [filterDiff, setFilterDiff] = useState<string | null>(null);
+    const [filterTag, setFilterTag] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const fetchNotes = async () => {
@@ -26,18 +30,24 @@ export default function NotesPage() {
         fetchNotes();
     }, []);
 
-    // Grouping Logic - By Date (Category)
-    const groupedNotes = notes.reduce((acc, note) => {
-        const date = note.category || 'Unscheduled'; // Use the category field for date
-        if (!acc[date]) acc[date] = [];
-        acc[date].push(note);
-        return acc;
-    }, {} as Record<string, Note[]>);
+    // Extract all unique tags
+    const allTags = Array.from(new Set(notes.flatMap(n => n.tags || []))).sort();
+    const commonTags = ['Arrays', 'Strings', 'Recursion', 'Bit Manipulation', 'Sorting', 'Searching', 'Stack/Queue', 'Graph/Tree', 'DP'];
+    // Merge common tags first, then others
+    const displayTags = [...commonTags, ...allTags.filter(t => !commonTags.includes(t) && !['Easy', 'Medium', 'Hard', 'Variations'].includes(t))];
 
-    // Sort Dates Chronologically (Newest First)
-    const topics = Object.keys(groupedNotes).sort((a, b) => {
-        if (a === 'Unscheduled') return 1;
-        if (b === 'Unscheduled') return -1;
+    // Filter & Sort Logic
+    const filteredNotes = notes.filter(note => {
+        const matchesDiff = filterDiff ? note.difficulty === filterDiff : true;
+        const matchesTag = filterTag ? note.tags?.includes(filterTag) : true;
+        const matchesSearch = searchQuery
+            ? note.title.toLowerCase().includes(searchQuery.toLowerCase()) || note.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
+            : true;
+        return matchesDiff && matchesTag && matchesSearch;
+    }).sort((a, b) => {
+        // Sort by Date (Category) - Newest First
+        const dateA = a.category || '01/01/1970';
+        const dateB = b.category || '01/01/1970';
 
         const parseDate = (d: string) => {
             const parts = d.split('/');
@@ -45,7 +55,7 @@ export default function NotesPage() {
             return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0])).getTime();
         };
 
-        return parseDate(b) - parseDate(a);
+        return parseDate(dateB) - parseDate(dateA);
     });
 
     return (
@@ -66,15 +76,38 @@ export default function NotesPage() {
                 )}
             </header>
 
-            {/* Difficulty Filter */}
-            <div className={styles.filterBar}>
-                {['Easy', 'Medium', 'Hard'].map(diff => (
+            {/* Search & Filter Bar */}
+            <div className={styles.controls}>
+                <input
+                    type="text"
+                    placeholder="Search problems..."
+                    className={styles.searchInput}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+
+                <div className={styles.filterGroup}>
+                    {['Easy', 'Medium', 'Hard'].map(diff => (
+                        <button
+                            key={diff}
+                            className={`${styles.filterBtn} ${filterDiff === diff ? styles.active : ''}`}
+                            onClick={() => setFilterDiff(filterDiff === diff ? null : diff)}
+                        >
+                            {diff}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Tag Cloud */}
+            <div className={styles.tagCloud}>
+                {displayTags.map(tag => (
                     <button
-                        key={diff}
-                        className={`${styles.filterBtn} ${filterDiff === diff ? styles.active : ''}`}
-                        onClick={() => setFilterDiff(filterDiff === diff ? null : diff)}
+                        key={tag}
+                        className={`${styles.tagChip} ${filterTag === tag ? styles.activeTag : ''}`}
+                        onClick={() => setFilterTag(filterTag === tag ? null : tag)}
                     >
-                        {diff}
+                        {tag}
                     </button>
                 ))}
             </div>
@@ -83,29 +116,16 @@ export default function NotesPage() {
                 <div style={{ padding: '4rem', textAlign: 'center' }}><span className="spinner"></span></div>
             ) : (
                 <div className={styles.syllabusList}>
-                    {topics.map(topic => {
-                        const topicNotes = groupedNotes[topic].filter(n => !filterDiff || n.tags?.includes(filterDiff));
-                        if (topicNotes.length === 0) return null;
-
-                        return (
-                            <div key={topic} className={styles.topicSection}>
-                                <div className={styles.topicHeader}>
-                                    <h2 className={styles.topicTitle}>{topic}</h2>
-                                    <span className={styles.topicCount}>{topicNotes.length} Problems</span>
-                                </div>
-                                <div className={styles.notesGrid}>
-                                    {topicNotes.map(note => (
-                                        <NoteCard key={note.id} note={note} />
-                                    ))}
-                                </div>
-                            </div>
-                        );
-                    })}
-
-                    {notes.length === 0 && !loading && (
+                    {filteredNotes.length > 0 ? (
+                        <div className={styles.notesGrid}>
+                            {filteredNotes.map(note => (
+                                <NoteCard key={note.id} note={note} />
+                            ))}
+                        </div>
+                    ) : (
                         <div style={{ textAlign: 'center', color: '#666', marginTop: '4rem' }}>
-                            <p>No notes found in the curriculum.</p>
-                            {role === 'admin' && (
+                            <p>No notes found matching your filters.</p>
+                            {notes.length === 0 && role === 'admin' && (
                                 <button onClick={() => fetch('/api/seed').then(() => window.location.reload())} style={{ background: 'var(--primary)', color: '#fff', border: 'none', padding: '0.5rem 1rem', borderRadius: '8px', cursor: 'pointer', marginTop: '1rem' }}>
                                     Seed Default Data
                                 </button>
