@@ -40,14 +40,26 @@ export default function ProgressPage() {
                         streak: 3 // TODO: Implement daily activity tracking for real streak data
                     });
 
+                    // Major Topics Whitelist
+                    const majorTopics = [
+                        'Arrays', 'Strings', 'Recursion', 'Bit Manipulation',
+                        'Sorting', 'Searching', 'Stack', 'Queue', 'Stack/Queue',
+                        'LinkedList', 'Tree', 'Graph', 'Graph/Tree',
+                        'DP', 'Greedy', 'Backtracking', 'Heap', 'HashMap',
+                        'Two Pointers', 'Sliding Window'
+                    ];
+
                     // Process Tags for Topics
                     const tagCounts: { [key: string]: number } = {};
                     notesData.forEach((note: any) => {
                         if (note.tags && Array.isArray(note.tags)) {
                             note.tags.forEach((tag: string) => {
-                                // Filter out difficulty tags and metadata like "Incomplete"
-                                if (!['Easy', 'Medium', 'Hard', 'Incomplete', 'Important'].includes(tag)) {
-                                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                                // unexpected capitalization handling?
+                                // let's match loosely or just check inclusion in whitelist
+                                const majorMatch = majorTopics.find(t => t.toLowerCase() === tag.toLowerCase());
+                                if (majorMatch) {
+                                    // Use the canonical name from whitelist
+                                    tagCounts[majorMatch] = (tagCounts[majorMatch] || 0) + 1;
                                 }
                             });
                         }
