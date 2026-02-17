@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
@@ -8,7 +8,7 @@ import styles from './page.module.css';
 import NoteCard from '@/components/NoteCard';
 import { Note } from '@/data/notes';
 
-export default function NotesPage() {
+function NotesPageContent() {
     const { data: session } = useSession();
     const searchParams = useSearchParams();
     const tagParam = searchParams.get('tag');
@@ -141,5 +141,13 @@ export default function NotesPage() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function NotesPage() {
+    return (
+        <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}><span className="spinner"></span></div>}>
+            <NotesPageContent />
+        </Suspense>
     );
 }
