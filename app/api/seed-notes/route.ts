@@ -79,19 +79,25 @@ async function seedNotes() {
         const id = key.replace(/\|/g, '-').replace(/\//g, '').replace(/\s+/g, '-');
         const tags = inferTags(data.title, data.notes);
 
+        // Extract difficulty from tags and set as separate field
+        const difficulty = tags.find(t => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
+        const topicTags = tags.filter(t => !['Easy', 'Medium', 'Hard'].includes(t));
+
         let description = data.notes;
         if (data.grouped) {
             description = `**Grouped Variations:**\n${data.notes}`;
-            tags.push('Variations');
+            topicTags.push('Variations'); // Add 'Variations' to topic tags
         }
 
-        const noteDoc = {
+        const noteData = {
             id,
             title: data.title,
             description: description || 'No initial notes provided.',
             category: data.date,
-            tags: tags,
-            fullDescription: '',
+            fullDescription: data.notes, // Original full notes for detailed view
+            difficulty,
+            tags: topicTags, // Only topic tags, not difficulty
+            solutions: [], // New field for solutions
             createdAt: new Date(),
             updatedAt: new Date()
         };

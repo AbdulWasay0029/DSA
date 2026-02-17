@@ -38,8 +38,9 @@ export default function NotesPage() {
 
     // Filter & Sort Logic
     const filteredNotes = notes.filter(note => {
-        // Check difficulty in tags (Easy/Medium/Hard are stored as tags)
-        const matchesDiff = filterDiff ? note.tags?.includes(filterDiff) : true;
+        // Check difficulty field (not tags anymore)
+        const noteDifficulty = note.difficulty || note.tags?.find(t => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
+        const matchesDiff = filterDiff ? noteDifficulty === filterDiff : true;
         const matchesTag = filterTag ? note.tags?.includes(filterTag) : true;
         const matchesSearch = searchQuery
             ? note.title.toLowerCase().includes(searchQuery.toLowerCase()) || note.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))

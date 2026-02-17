@@ -45,8 +45,8 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
     const [tagInput, setTagInput] = useState('');
     const [showTagSuggestions, setShowTagSuggestions] = useState(false);
 
-    // Common tags for autocomplete
-    const commonTags = ['Easy', 'Medium', 'Hard', 'Arrays', 'Strings', 'Recursion', 'Bit Manipulation',
+    // Common tags for autocomplete (NOT including difficulty levels)
+    const commonTags = ['Arrays', 'Strings', 'Recursion', 'Bit Manipulation',
         'Sorting', 'Searching', 'Stack/Queue', 'Graph/Tree', 'DP', 'Backtracking',
         'Two Pointers', 'Sliding Window', 'Hashing', 'Math', 'Greedy', 'Matrix', 'Variations'];
 
@@ -60,7 +60,8 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                     setAllNotes(notes);
                     const found = notes.find((n: any) => n.id === params.id);
                     if (found) {
-                        const diff = found.tags?.find((t: string) => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
+                        // Use difficulty field if it exists, otherwise extract from tags
+                        const diff = found.difficulty || found.tags?.find((t: string) => ['Easy', 'Medium', 'Hard'].includes(t)) || 'Medium';
                         setNote({ ...found, difficulty: diff });
                         setEditData({ ...found, difficulty: diff });
                     }
