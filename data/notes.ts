@@ -10,6 +10,7 @@ export interface Note {
     description: string;
     category?: string; // For Date/Session grouping
     fullDescription: string;
+    difficulty?: 'Easy' | 'Medium' | 'Hard';
     tags?: string[]; // e.g. "Incomplete", "Concept", "Important"
     tips?: string[]; // For tips, tricks, and side notes found on the page
     complexity?: Complexity; // General complexity for the problem/note
