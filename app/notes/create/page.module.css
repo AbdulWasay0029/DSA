@@ -137,6 +137,12 @@
     cursor: pointer;
 }
 
+.select option {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+
 .complexityGrid {
     display: flex;
     gap: 1rem;

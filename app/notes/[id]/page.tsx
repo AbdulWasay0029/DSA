@@ -223,13 +223,20 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                     <div style={{ display: 'flex', gap: '1rem' }}>
                                         <select
                                             className={styles.inputTitle}
-                                            style={{ fontSize: '1rem', padding: '0.5rem', width: 'auto' }}
+                                            style={{
+                                                fontSize: '1rem',
+                                                padding: '0.5rem',
+                                                width: 'auto',
+                                                color: '#fff',
+                                                background: 'rgba(0,0,0,0.3)',
+                                                border: '1px solid rgba(255,255,255,0.2)'
+                                            }}
                                             value={data.difficulty || 'Medium'}
                                             onChange={e => setEditData({ ...data, difficulty: e.target.value as any })}
                                         >
-                                            <option value="Easy">Easy</option>
-                                            <option value="Medium">Medium</option>
-                                            <option value="Hard">Hard</option>
+                                            <option value="Easy" style={{ background: '#1a1a1a', color: '#fff' }}>Easy</option>
+                                            <option value="Medium" style={{ background: '#1a1a1a', color: '#fff' }}>Medium</option>
+                                            <option value="Hard" style={{ background: '#1a1a1a', color: '#fff' }}>Hard</option>
                                         </select>
                                         <input
                                             className={styles.inputTitle}
