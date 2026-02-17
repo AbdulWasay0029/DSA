@@ -26,16 +26,27 @@ export default function NotesPage() {
         fetchNotes();
     }, []);
 
-    // Grouping Logic
+    // Grouping Logic - By Date (Category)
     const groupedNotes = notes.reduce((acc, note) => {
-        // Find the "Topic" tag (anything that is NOT Easy/Medium/Hard)
-        const topic = note.tags?.find(t => !['Easy', 'Medium', 'Hard'].includes(t)) || 'Uncategorized';
-        if (!acc[topic]) acc[topic] = [];
-        acc[topic].push(note);
+        const date = note.category || 'Unscheduled'; // Use the category field for date
+        if (!acc[date]) acc[date] = [];
+        acc[date].push(note);
         return acc;
     }, {} as Record<string, Note[]>);
 
-    const topics = Object.keys(groupedNotes).sort();
+    // Sort Dates Chronologically (Newest First)
+    const topics = Object.keys(groupedNotes).sort((a, b) => {
+        if (a === 'Unscheduled') return 1;
+        if (b === 'Unscheduled') return -1;
+
+        const parseDate = (d: string) => {
+            const parts = d.split('/');
+            if (parts.length !== 3) return 0;
+            return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0])).getTime();
+        };
+
+        return parseDate(b) - parseDate(a);
+    });
 
     return (
         <div className={styles.container}>

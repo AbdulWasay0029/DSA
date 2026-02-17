@@ -26,6 +26,7 @@ interface Note {
         complexity?: { time?: string; space?: string; analysis?: string };
     }[];
     difficulty?: 'Easy' | 'Medium' | 'Hard';
+    category?: string;
 }
 
 export default function NoteDetailPage({ params }: { params: { id: string } }) {
@@ -185,42 +186,82 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                 {/* --- MAIN CONTENT (Left) --- */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                     <header className={styles.header}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <span className={`${styles.difficultyBadge} ${styles[data.difficulty || 'Medium']}`}>
-                                {data.difficulty || 'Medium'}
-                            </span>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+                                {isEditing ? (
+                                    <div style={{ display: 'flex', gap: '1rem' }}>
+                                        <select
+                                            className={styles.inputTitle}
+                                            style={{ fontSize: '1rem', padding: '0.5rem', width: 'auto' }}
+                                            value={data.difficulty || 'Medium'}
+                                            onChange={e => setEditData({ ...data, difficulty: e.target.value as any })}
+                                        >
+                                            <option value="Easy">Easy</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Hard">Hard</option>
+                                        </select>
+                                        <input
+                                            className={styles.inputTitle}
+                                            style={{ fontSize: '1rem', padding: '0.5rem', width: '150px' }}
+                                            placeholder="DD/MM/YYYY"
+                                            value={data.category || ''}
+                                            onChange={e => setEditData({ ...data, category: e.target.value })}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                        <span className={`${styles.difficultyBadge} ${styles[data.difficulty || 'Medium']}`}>
+                                            {data.difficulty || 'Medium'}
+                                        </span>
+                                        {data.category && (
+                                            <span style={{ color: '#888', fontSize: '0.9rem' }}>• {data.category}</span>
+                                        )}
+                                    </div>
+                                )}
 
-                            {session && (
-                                <button
-                                    onClick={toggleCompletion}
-                                    disabled={completionLoading}
-                                    style={{
-                                        background: isCompleted ? 'var(--primary)' : 'rgba(255,255,255,0.1)',
-                                        border: '1px solid rgba(255,255,255,0.2)',
-                                        color: '#fff',
-                                        padding: '0.5rem 1rem',
-                                        borderRadius: '8px',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        fontSize: '0.9rem'
-                                    }}
-                                >
-                                    {isCompleted ? '✓ Completed' : 'Mark Complete'}
-                                </button>
+                                {session && !isEditing && (
+                                    <button
+                                        onClick={toggleCompletion}
+                                        disabled={completionLoading}
+                                        style={{
+                                            background: isCompleted ? 'var(--primary)' : 'rgba(255,255,255,0.1)',
+                                            border: '1px solid rgba(255,255,255,0.2)',
+                                            color: '#fff',
+                                            padding: '0.5rem 1rem',
+                                            borderRadius: '8px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    >
+                                        {isCompleted ? '✓ Completed' : 'Mark Complete'}
+                                    </button>
+                                )}
+                            </div>
+
+                            {isEditing ? (
+                                <div style={{ width: '100%' }}>
+                                    <input
+                                        className={styles.inputTitle}
+                                        value={data.title}
+                                        onChange={e => setEditData({ ...data, title: e.target.value })}
+                                        placeholder="Problem Title"
+                                        style={{ width: '100%' }}
+                                    />
+                                    <input
+                                        className={styles.inputTitle}
+                                        style={{ fontSize: '0.9rem', marginTop: '0.5rem', width: '100%' }}
+                                        placeholder="Tags (comma separated)"
+                                        value={data.tags?.join(', ') || ''}
+                                        onChange={e => setEditData({ ...data, tags: e.target.value.split(',').map(t => t.trim()) })}
+                                    />
+                                </div>
+                            ) : (
+                                <h1 className={styles.title}>{data.title}</h1>
                             )}
                         </div>
-
-                        {isEditing ? (
-                            <input
-                                className={styles.inputTitle}
-                                value={data.title}
-                                onChange={e => setEditData({ ...data, title: e.target.value })}
-                            />
-                        ) : (
-                            <h1 className={styles.title}>{data.title}</h1>
-                        )}
                     </header>
 
                     {/* Problem Statement */}
@@ -242,34 +283,64 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                     <div className={styles.solutions}>
                         {data.solutions.map((sol, i) => (
                             <div key={i}>
-                                <h3 style={{ color: '#fff', fontSize: '1.1rem', margin: '1.5rem 0 0.5rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem' }}>
                                     {isEditing ? (
-                                        <input
-                                            value={sol.title}
-                                            onChange={e => {
-                                                const newSols = [...data.solutions];
-                                                newSols[i].title = e.target.value;
-                                                setEditData({ ...data, solutions: newSols });
-                                            }}
-                                            style={{ background: 'transparent', border: '1px solid #333', color: '#fff', padding: '0.2rem' }}
-                                        />
-                                    ) : sol.title}
-                                </h3>
+                                        <div style={{ display: 'flex', gap: '0.5rem', flex: 1 }}>
+                                            <input
+                                                value={sol.title}
+                                                onChange={e => {
+                                                    const newSols = [...data.solutions];
+                                                    newSols[i].title = e.target.value;
+                                                    setEditData({ ...data, solutions: newSols });
+                                                }}
+                                                placeholder="Solution Title"
+                                                style={{ background: 'transparent', border: '1px solid #333', color: '#fff', padding: '0.4rem', borderRadius: '4px', flex: 1 }}
+                                            />
+                                            <select
+                                                value={sol.language}
+                                                onChange={e => {
+                                                    const newSols = [...data.solutions];
+                                                    newSols[i].language = e.target.value;
+                                                    setEditData({ ...data, solutions: newSols });
+                                                }}
+                                                style={{ background: '#222', color: '#fff', border: '1px solid #333', borderRadius: '4px' }}
+                                            >
+                                                <option value="cpp">C++</option>
+                                                <option value="python">Python</option>
+                                                <option value="javascript">JS</option>
+                                                <option value="java">Java</option>
+                                            </select>
+                                            <button
+                                                onClick={() => {
+                                                    const newSols = data.solutions.filter((_, idx) => idx !== i);
+                                                    setEditData({ ...data, solutions: newSols });
+                                                }}
+                                                style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '0.4rem', borderRadius: '4px', cursor: 'pointer' }}
+                                            >
+                                                🗑
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <h3 style={{ color: '#fff', fontSize: '1.1rem', margin: 0 }}>{sol.title}</h3>
+                                    )}
+                                </div>
 
                                 <div className={styles.codeWindow}>
-                                    <div className={styles.codeBar}>
-                                        <div className={styles.dots}>
-                                            <span className={styles.dot}></span><span className={styles.dot}></span><span className={styles.dot}></span>
+                                    {!isEditing && (
+                                        <div className={styles.codeBar}>
+                                            <div className={styles.dots}>
+                                                <span className={styles.dot}></span><span className={styles.dot}></span><span className={styles.dot}></span>
+                                            </div>
+                                            <span className={styles.lang}>{sol.language}</span>
+                                            <button className={styles.copyButton} onClick={() => copyToClipboard(sol.code, i)}>
+                                                {copiedIndex === i ? 'Copied' : 'Copy'}
+                                            </button>
                                         </div>
-                                        <span className={styles.lang}>{sol.language}</span>
-                                        <button className={styles.copyButton} onClick={() => copyToClipboard(sol.code, i)}>
-                                            {copiedIndex === i ? 'Copied' : 'Copy'}
-                                        </button>
-                                    </div>
+                                    )}
                                     {isEditing ? (
                                         <textarea
                                             className={styles.inputArea}
-                                            style={{ minHeight: '300px', border: 'none', borderRadius: 0 }}
+                                            style={{ minHeight: '300px', border: 'none', borderRadius: 0, fontFamily: 'monospace' }}
                                             value={sol.code}
                                             onChange={e => {
                                                 const newSols = [...data.solutions];
@@ -289,6 +360,28 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                 </div>
                             </div>
                         ))}
+                        {isEditing && (
+                            <button
+                                onClick={() => {
+                                    setEditData({
+                                        ...data,
+                                        solutions: [...data.solutions, { title: 'New Solution', language: 'cpp', code: '// Write code here' }]
+                                    });
+                                }}
+                                style={{
+                                    width: '100%',
+                                    padding: '1rem',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    border: '1px dashed rgba(255,255,255,0.2)',
+                                    color: '#aaa',
+                                    marginTop: '1rem',
+                                    cursor: 'pointer',
+                                    borderRadius: '8px'
+                                }}
+                            >
+                                + Add Solution
+                            </button>
+                        )}
                     </div>
                 </motion.div>
 

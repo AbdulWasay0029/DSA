@@ -8,6 +8,7 @@ export interface Note {
     id: string;
     title: string;
     description: string;
+    category?: string; // For Date/Session grouping
     fullDescription: string;
     tags?: string[]; // e.g. "Incomplete", "Concept", "Important"
     tips?: string[]; // For tips, tricks, and side notes found on the page
