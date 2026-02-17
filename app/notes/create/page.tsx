@@ -92,6 +92,28 @@ export default function CreateNotePage() {
                     placeholder="Problem Title..."
                 />
 
+                {/* Difficulty & Category Row */}
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                    <select
+                        className={styles.input}
+                        value={data.difficulty || 'Medium'}
+                        onChange={e => setData({ ...data, difficulty: e.target.value as 'Easy' | 'Medium' | 'Hard' })}
+                        style={{ flex: 1 }}
+                    >
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+
+                    <input
+                        className={styles.input}
+                        value={data.category || ''}
+                        onChange={e => setData({ ...data, category: e.target.value })}
+                        placeholder="Category/Date (e.g., 13/08/2025)"
+                        style={{ flex: 1 }}
+                    />
+                </div>
+
                 <input
                     className={styles.input}
                     value={data.description}
