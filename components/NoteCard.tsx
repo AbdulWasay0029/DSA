@@ -25,6 +25,23 @@ export default function NoteCard({ note }: { note: Note }) {
                     <h3 className={styles.title}>{note.title}</h3>
                 </div>
 
+                {/* Description */}
+                {note.description && (
+                    <p className={styles.description}>{note.description}</p>
+                )}
+
+                {/* Tags */}
+                {note.tags && note.tags.length > 0 && (
+                    <div className={styles.tags}>
+                        {note.tags.slice(0, 3).map(tag => (
+                            <span key={tag} className={styles.tag}>{tag}</span>
+                        ))}
+                        {note.tags.length > 3 && (
+                            <span className={styles.tagMore}>+{note.tags.length - 3}</span>
+                        )}
+                    </div>
+                )}
+
                 <div className={styles.metaRow}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                         <span className={`${styles.difficultyDot} ${styles['diff' + difficulty]}`}></span>
