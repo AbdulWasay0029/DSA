@@ -19,6 +19,8 @@ export default function Navbar() {
         { name: 'Library', path: '/links' },
     ];
 
+    const role = (session?.user as any)?.role || 'visitor';
+
     return (
         <motion.nav
             className={styles.navbar}
@@ -53,6 +55,18 @@ export default function Navbar() {
                             )}
                         </Link>
                     ))}
+                    {role === 'admin' && (
+                        <Link
+                            href="/admin"
+                            className={`${styles.navLink} ${pathname === '/admin' ? styles.active : ''}`}
+                            style={{ color: 'var(--primary)' }}
+                        >
+                            Admin
+                            {pathname === '/admin' && (
+                                <motion.div layoutId="underline" className={styles.underline} />
+                            )}
+                        </Link>
+                    )}
                 </div>
 
                 {/* Right Controls */}
@@ -129,6 +143,16 @@ export default function Navbar() {
                                     {item.name}
                                 </Link>
                             ))}
+                            {role === 'admin' && (
+                                <Link
+                                    href="/admin"
+                                    className={styles.mobileLink}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    style={{ color: 'var(--primary)' }}
+                                >
+                                    Admin
+                                </Link>
+                            )}
                             {!session && (
                                 <Link href="/login" className={styles.mobileLink} onClick={() => setIsMobileMenuOpen(false)}>
                                     Sign In
