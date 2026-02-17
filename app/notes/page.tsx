@@ -46,18 +46,12 @@ export default function NotesPage() {
             ? note.title.toLowerCase().includes(searchQuery.toLowerCase()) || note.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
             : true;
         return matchesDiff && matchesTag && matchesSearch;
-    }).sort((a, b) => {
-        // Sort by Date (Category) - Newest First
-        const dateA = a.category || '01/01/1970';
-        const dateB = b.category || '01/01/1970';
-
-        const parseDate = (d: string) => {
-            const parts = d.split('/');
-            if (parts.length !== 3) return 0;
-            return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0])).getTime();
-        };
-
-        return parseDate(dateB) - parseDate(dateA);
+    }).sort((a: any, b: any) => {
+        // Sort by Date - Newest First
+        // Handle both Date objects and ISO strings
+        const timeA = a.date ? new Date(a.date).getTime() : 0;
+        const timeB = b.date ? new Date(b.date).getTime() : 0;
+        return timeB - timeA;
     });
 
     return (

@@ -92,7 +92,7 @@ export default function CreateNotePage() {
                     placeholder="Problem Title..."
                 />
 
-                {/* Difficulty & Category Row */}
+                {/* Difficulty & Date Row */}
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                     <select
                         className={styles.input}
@@ -106,10 +106,10 @@ export default function CreateNotePage() {
                     </select>
 
                     <input
+                        type="date"
                         className={styles.input}
-                        value={data.category || ''}
-                        onChange={e => setData({ ...data, category: e.target.value })}
-                        placeholder="Category/Date (e.g., 13/08/2025)"
+                        value={data.date ? (typeof data.date === 'string' ? data.date.split('T')[0] : new Date(data.date).toISOString().split('T')[0]) : ''}
+                        onChange={e => setData({ ...data, date: e.target.value })}
                         style={{ flex: 1 }}
                     />
                 </div>

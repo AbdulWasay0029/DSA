@@ -246,11 +246,11 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                             <option value="Hard" style={{ background: '#1a1a1a', color: '#fff' }}>Hard</option>
                                         </select>
                                         <input
+                                            type="date"
                                             className={styles.inputTitle}
-                                            style={{ fontSize: '1rem', padding: '0.5rem', width: '150px' }}
-                                            placeholder="DD/MM/YYYY"
-                                            value={data.category || ''}
-                                            onChange={e => setEditData({ ...data, category: e.target.value })}
+                                            style={{ fontSize: '1rem', padding: '0.5rem', width: 'auto' }}
+                                            value={data.date ? (typeof data.date === 'string' ? data.date.split('T')[0] : new Date(data.date).toISOString().split('T')[0]) : ''}
+                                            onChange={e => setEditData({ ...data, date: e.target.value })}
                                         />
                                     </div>
                                 ) : (
@@ -258,8 +258,10 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                         <span className={`${styles.difficultyBadge} ${styles[data.difficulty || 'Medium']}`}>
                                             {data.difficulty || 'Medium'}
                                         </span>
-                                        {data.category && (
-                                            <span style={{ color: '#888', fontSize: '0.9rem' }}>• {data.category}</span>
+                                        {data.date && (
+                                            <span style={{ color: '#888', fontSize: '0.9rem' }}>
+                                                • {new Date(data.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                            </span>
                                         )}
                                     </div>
                                 )}

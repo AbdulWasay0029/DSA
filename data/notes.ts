@@ -8,7 +8,7 @@ export interface Note {
     id: string;
     title: string;
     description: string;
-    category?: string; // For Date/Session grouping
+    date?: Date | string; // Date when the problem was studied/created
     fullDescription: string;
     difficulty?: 'Easy' | 'Medium' | 'Hard';
     tags?: string[]; // e.g. "Incomplete", "Concept", "Important"

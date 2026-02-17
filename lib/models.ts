@@ -31,7 +31,7 @@ const NoteSchema = new Schema({
     description: { type: String, required: true },
     fullDescription: { type: String, default: '' },
     difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Medium' },
-    category: { type: String, default: '' }, // For date/session grouping
+    date: { type: Date }, // Date when problem was studied/created
     tags: [String],
     tips: [String],
     examples: [ExampleSchema],
@@ -48,7 +48,7 @@ const SuggestionSchema = new Schema({
     description: String,
     fullDescription: String,
     difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'] },
-    category: String,
+    date: Date,
     tags: [String],
     tips: [String],
     examples: [ExampleSchema],

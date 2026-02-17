@@ -7,7 +7,8 @@ import { authOptions } from '@/lib/auth';
 export async function GET() {
     await dbConnect();
     try {
-        const notes = await NoteModel.find({}).sort({ createdAt: -1 });
+        // Sort by 'date' if available, otherwise 'createdAt'. Both descending.
+        const notes = await NoteModel.find({}).sort({ date: -1, createdAt: -1 });
         return NextResponse.json(notes);
     } catch (e: any) {
         console.error("Database API Error:", e);
