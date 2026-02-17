@@ -282,6 +282,15 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                         style={{ width: '100%' }}
                                     />
 
+                                    {/* Description (Short Summary) */}
+                                    <input
+                                        className={styles.input}
+                                        value={data.description || ''}
+                                        onChange={e => setEditData({ ...data, description: e.target.value })}
+                                        placeholder="Short summary (shown on card)..."
+                                        style={{ width: '100%', marginTop: '0.5rem' }}
+                                    />
+
                                     {/* Tag Selector with Chips */}
                                     <div style={{ marginTop: '0.5rem', width: '100%' }}>
                                         <div style={{
@@ -429,6 +438,142 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                         </div>
                     )}
 
+                    {/* Tips & Tricks */}
+                    {(isEditing || (data.tips && data.tips.length > 0)) && (
+                        <>
+                            <div className={styles.sectionTitle}>💡 Tips & Tricks</div>
+                            {isEditing ? (
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    {data.tips?.map((tip, i) => (
+                                        <div key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                                            <input
+                                                className={styles.input}
+                                                value={tip}
+                                                onChange={e => {
+                                                    const newTips = [...(data.tips || [])];
+                                                    newTips[i] = e.target.value;
+                                                    setEditData({ ...data, tips: newTips });
+                                                }}
+                                                placeholder="Enter a tip..."
+                                                style={{ flex: 1 }}
+                                            />
+                                            <button
+                                                onClick={() => {
+                                                    const newTips = data.tips?.filter((_, idx) => idx !== i) || [];
+                                                    setEditData({ ...data, tips: newTips });
+                                                }}
+                                                style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer' }}
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <button
+                                        onClick={() => setEditData({ ...data, tips: [...(data.tips || []), ''] })}
+                                        style={{ background: 'var(--primary)', color: '#fff', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer', marginTop: '0.5rem' }}
+                                    >
+                                        + Add Tip
+                                    </button>
+                                </div>
+                            ) : (
+                                <ul style={{ marginBottom: '1.5rem', paddingLeft: '1.5rem' }}>
+                                    {data.tips?.map((tip, i) => (
+                                        <li key={i} style={{ color: '#aaa', marginBottom: '0.5rem' }}>{tip}</li>
+                                    ))}
+                                </ul>
+                            )}
+                        </>
+                    )}
+
+                    {/* Examples */}
+                    {(isEditing || (data.examples && data.examples.length > 0)) && (
+                        <>
+                            <div className={styles.sectionTitle}>📝 Examples</div>
+                            {isEditing ? (
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    {data.examples?.map((ex, i) => (
+                                        <div key={i} style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                                                <strong style={{ color: '#aaa' }}>Example {i + 1}</strong>
+                                                <button
+                                                    onClick={() => {
+                                                        const newExamples = data.examples?.filter((_, idx) => idx !== i) || [];
+                                                        setEditData({ ...data, examples: newExamples });
+                                                    }}
+                                                    style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '0.3rem 0.6rem', borderRadius: '4px', cursor: 'pointer' }}
+                                                >
+                                                    ×
+                                                </button>
+                                            </div>
+                                            <input
+                                                className={styles.input}
+                                                value={ex.input}
+                                                onChange={e => {
+                                                    const newExamples = [...(data.examples || [])];
+                                                    newExamples[i] = { ...newExamples[i], input: e.target.value };
+                                                    setEditData({ ...data, examples: newExamples });
+                                                }}
+                                                placeholder="Input"
+                                                style={{ marginBottom: '0.5rem' }}
+                                            />
+                                            <input
+                                                className={styles.input}
+                                                value={ex.output || ''}
+                                                onChange={e => {
+                                                    const newExamples = [...(data.examples || [])];
+                                                    newExamples[i] = { ...newExamples[i], output: e.target.value };
+                                                    setEditData({ ...data, examples: newExamples });
+                                                }}
+                                                placeholder="Output"
+                                                style={{ marginBottom: '0.5rem' }}
+                                            />
+                                            <textarea
+                                                className={styles.inputArea}
+                                                value={ex.explanation || ''}
+                                                onChange={e => {
+                                                    const newExamples = [...(data.examples || [])];
+                                                    newExamples[i] = { ...newExamples[i], explanation: e.target.value };
+                                                    setEditData({ ...data, examples: newExamples });
+                                                }}
+                                                placeholder="Explanation (optional)"
+                                                rows={2}
+                                            />
+                                        </div>
+                                    ))}
+                                    <button
+                                        onClick={() => setEditData({ ...data, examples: [...(data.examples || []), { input: '', output: '', explanation: '' }] })}
+                                        style={{ background: 'var(--primary)', color: '#fff', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer' }}
+                                    >
+                                        + Add Example
+                                    </button>
+                                </div>
+                            ) : (
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    {data.examples?.map((ex, i) => (
+                                        <div key={i} style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                            <div style={{ marginBottom: '0.5rem' }}>
+                                                <strong style={{ color: '#4ade80' }}>Input:</strong>
+                                                <pre style={{ background: 'rgba(0,0,0,0.3)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.25rem', color: '#fff' }}>{ex.input}</pre>
+                                            </div>
+                                            {ex.output && (
+                                                <div style={{ marginBottom: '0.5rem' }}>
+                                                    <strong style={{ color: '#60a5fa' }}>Output:</strong>
+                                                    <pre style={{ background: 'rgba(0,0,0,0.3)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.25rem', color: '#fff' }}>{ex.output}</pre>
+                                                </div>
+                                            )}
+                                            {ex.explanation && (
+                                                <div>
+                                                    <strong style={{ color: '#fbbf24' }}>Explanation:</strong>
+                                                    <p style={{ color: '#aaa', marginTop: '0.25rem' }}>{ex.explanation}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </>
+                    )}
+
                     {/* Solutions */}
                     <div className={styles.sectionTitle}>Solutions & Analysis</div>
                     <div className={styles.solutions}>
@@ -489,24 +634,74 @@ export default function NoteDetailPage({ params }: { params: { id: string } }) {
                                         </div>
                                     )}
                                     {isEditing ? (
-                                        <textarea
-                                            className={styles.inputArea}
-                                            style={{ minHeight: '300px', border: 'none', borderRadius: 0, fontFamily: 'monospace' }}
-                                            value={sol.code}
-                                            onChange={e => {
-                                                const newSols = [...data.solutions];
-                                                newSols[i].code = e.target.value;
-                                                setEditData({ ...data, solutions: newSols });
-                                            }}
-                                        />
+                                        <>
+                                            <textarea
+                                                className={styles.inputArea}
+                                                style={{ minHeight: '300px', border: 'none', borderRadius: 0, fontFamily: 'monospace' }}
+                                                value={sol.code}
+                                                onChange={e => {
+                                                    const newSols = [...data.solutions];
+                                                    newSols[i].code = e.target.value;
+                                                    setEditData({ ...data, solutions: newSols });
+                                                }}
+                                            />
+                                            {/* Complexity Fields */}
+                                            <div style={{ display: 'flex', gap: '0.5rem', padding: '0.5rem', background: 'rgba(0,0,0,0.3)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                                                <input
+                                                    className={styles.input}
+                                                    value={sol.complexity?.time || ''}
+                                                    onChange={e => {
+                                                        const newSols = [...data.solutions];
+                                                        newSols[i] = {
+                                                            ...newSols[i],
+                                                            complexity: { ...newSols[i].complexity, time: e.target.value }
+                                                        };
+                                                        setEditData({ ...data, solutions: newSols });
+                                                    }}
+                                                    placeholder="Time Complexity (e.g., O(n))"
+                                                    style={{ flex: 1, margin: 0 }}
+                                                />
+                                                <input
+                                                    className={styles.input}
+                                                    value={sol.complexity?.space || ''}
+                                                    onChange={e => {
+                                                        const newSols = [...data.solutions];
+                                                        newSols[i] = {
+                                                            ...newSols[i],
+                                                            complexity: { ...newSols[i].complexity, space: e.target.value }
+                                                        };
+                                                        setEditData({ ...data, solutions: newSols });
+                                                    }}
+                                                    placeholder="Space Complexity (e.g., O(1))"
+                                                    style={{ flex: 1, margin: 0 }}
+                                                />
+                                            </div>
+                                        </>
                                     ) : (
-                                        <SyntaxHighlighter
-                                            language={sol.language}
-                                            style={vscDarkPlus}
-                                            customStyle={{ margin: 0, padding: '1.5rem', background: 'transparent', fontSize: '0.9rem' }}
-                                        >
-                                            {sol.code}
-                                        </SyntaxHighlighter>
+                                        <>
+                                            <SyntaxHighlighter
+                                                language={sol.language}
+                                                style={vscDarkPlus}
+                                                customStyle={{ margin: 0, padding: '1.5rem', background: 'transparent', fontSize: '0.9rem' }}
+                                            >
+                                                {sol.code}
+                                            </SyntaxHighlighter>
+                                            {/* Show Complexity in View Mode */}
+                                            {(sol.complexity?.time || sol.complexity?.space) && (
+                                                <div style={{ padding: '0.75rem 1.5rem', background: 'rgba(0,0,0,0.3)', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: '1.5rem', fontSize: '0.9rem' }}>
+                                                    {sol.complexity?.time && (
+                                                        <div>
+                                                            <strong style={{ color: '#4ade80' }}>Time:</strong> <span style={{ color: '#aaa' }}>{sol.complexity.time}</span>
+                                                        </div>
+                                                    )}
+                                                    {sol.complexity?.space && (
+                                                        <div>
+                                                            <strong style={{ color: '#60a5fa' }}>Space:</strong> <span style={{ color: '#aaa' }}>{sol.complexity.space}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </>
                                     )}
                                 </div>
                             </div>
