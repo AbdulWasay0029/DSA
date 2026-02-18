@@ -61,8 +61,4 @@ This project is currently for personal study and small group collaboration. Sugg
 
 Private / Personal Use.
 
-## 📚 Detailed Documentation
 
-For a complete manual including API routes, database schema, and admin features, please read:
-- **[HANDOVER.md](./HANDOVER.md)** - The definitive guide for this project.
-- **[PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md)** - File tree and flow diagrams.
