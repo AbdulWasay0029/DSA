@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './NoteEditor.module.css';
-import { Note } from '@/data/notes';
+import { Note } from '@/lib/types';
 
 interface NoteEditorProps {
     initialData?: Partial<Note>;
