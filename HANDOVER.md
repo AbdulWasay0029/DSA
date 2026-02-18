@@ -140,3 +140,11 @@ If you modify code, here is how to save it to GitHub:
 This project is set up to deploy automatically to Vercel whenever you `git push` to `main`.
 - **Builds**: Check Vercel dashboard for logs if site breaks.
 - **Environment**: Make sure Vercel "Settings > Environment Variables" match your local `.env`.
+
+---
+
+## 🔮 Pending Features / Roadmap
+
+- **Suggested Problems**: There is a file `data/suggestions.json` intended for this feature, but it is currently empty and has no frontend implementation. You must first add data there and build a page (or section) to display it.
+- **Image Uploads**: Currently images are handled via external URLs or local files. A formalized upload system (e.g., to S3/Cloudinary) could be added.
+
