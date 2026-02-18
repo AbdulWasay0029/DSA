@@ -158,14 +158,9 @@ Toggles a note's completion status. **Requires login.** Body: `{ noteId, complet
 
 ---
 
-#### `GET /api/seed`
-One-time seeder. Reads `data/notes.json` and inserts into MongoDB. **Only runs if the collection is empty** (won't overwrite existing data). Call this once at `http://localhost:3000/api/seed` after setting up a fresh database.
-
-#### `GET /api/seed-links`
-Same as above but for links from `data/links.json`.
-
-#### `GET /api/seed-notes`
-Similar seeder variant.
+#### `GET /api/seed` / `GET /api/seed-links` / `GET /api/seed-notes`
+**Already done. Do not run again under normal circumstances.**
+These were one-time migration routes used to move data from local JSON files into MongoDB. They are safe to keep as an emergency fallback — they only insert if the collection is empty, so they cannot overwrite live data. Only use if you ever need to restore a completely wiped database.
 
 ---
 
@@ -304,16 +299,17 @@ Toolbar with buttons to insert Markdown syntax into the `fullDescription` textar
 
 ---
 
-## 🌱 Seeding the Database (Fresh Setup)
+## 🌱 Seeding the Database (Emergency Only)
 
-If you have a fresh MongoDB database with no data:
+**This has already been done. Your data is in MongoDB. You do not need to run these.**
 
-1. Make sure `data/notes.json` has your note data
-2. Visit `http://localhost:3000/api/seed` in browser (GET request)
-3. You should see: `{ "success": true, "message": "Seeded X notes." }`
-4. For links: visit `http://localhost:3000/api/seed-links`
+The seed routes (`/api/seed`, `/api/seed-links`) exist only as a safety net in case the database is ever completely wiped. They read from `data/notes.json` and `data/links.json` and insert into MongoDB — but **only if the collection is empty**. They will never overwrite existing data.
 
-**The seed routes skip if data already exists** — they won't overwrite.
+If you ever need to restore from scratch:
+1. Visit `http://localhost:3000/api/seed` (notes)
+2. Visit `http://localhost:3000/api/seed-links` (links)
+
+Note: `data/notes.json` may be outdated compared to what's currently in MongoDB (since notes have been added/edited via the UI). For a proper backup, export directly from MongoDB Atlas.
 
 ---
 
