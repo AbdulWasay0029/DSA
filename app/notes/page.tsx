@@ -131,11 +131,6 @@ function NotesPageContent() {
                     ) : (
                         <div style={{ textAlign: 'center', color: '#666', marginTop: '4rem' }}>
                             <p>No notes found matching your filters.</p>
-                            {notes.length === 0 && role === 'admin' && (
-                                <button onClick={() => fetch('/api/seed').then(() => window.location.reload())} style={{ background: 'var(--primary)', color: '#fff', border: 'none', padding: '0.5rem 1rem', borderRadius: '8px', cursor: 'pointer', marginTop: '1rem' }}>
-                                    Seed Default Data
-                                </button>
-                            )}
                         </div>
                     )}
                 </div>
