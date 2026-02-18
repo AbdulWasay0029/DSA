@@ -301,15 +301,16 @@ Toolbar with buttons to insert Markdown syntax into the `fullDescription` textar
 
 ## 🌱 Seeding the Database (Emergency Only)
 
-**This has already been done. Your data is in MongoDB. You do not need to run these.**
+**This has already been done. Your data is in MongoDB.**
 
-The seed routes (`/api/seed`, `/api/seed-links`) exist only as a safety net in case the database is ever completely wiped. They read from `data/notes.json` and `data/links.json` and insert into MongoDB — but **only if the collection is empty**. They will never overwrite existing data.
+The seed routes (`/api/seed`, `/api/seed-links`) exist as a safety net but depend on files in the `data/` folder (specifically `data/notes.json` and `data/links.json`).
 
-If you ever need to restore from scratch:
-1. Visit `http://localhost:3000/api/seed` (notes)
-2. Visit `http://localhost:3000/api/seed-links` (links)
+**Important:** The `data/` folder has been deleted from the repo to keep it clean. If you ever need to use these seed routes to restore a wiped database:
+1. Create a `data` folder in the project root.
+2. Place your backup `notes.json` or `links.json` inside it.
+3. Visit `http://localhost:3000/api/seed` or `http://localhost:3000/api/seed-links`.
 
-Note: `data/notes.json` may be outdated compared to what's currently in MongoDB (since notes have been added/edited via the UI). For a proper backup, export directly from MongoDB Atlas.
+Note: Export your data directly from MongoDB Atlas for the most up-to-date backup.
 
 ---
 
