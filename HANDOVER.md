@@ -85,6 +85,20 @@ If deleting fails via the UI, it's usually because the custom ID is missing. The
 
 ## 📦 Managing Data
 
+### 🖥️ Manual Database Access (MongoDB Atlas)
+If the Admin Dashboard isn't enough, you can edit the raw database directly:
+1.  **Log in**: Go to [cloud.mongodb.com](https://cloud.mongodb.com).
+2.  **Browse**: Click **"Browse Collections"** on your cluster.
+3.  **Edit**: Select the `notes` collection. You can:
+    -   **Search**: Filter by `{ title: "Two Sum" }`.
+    -   **Edit**: Click the **Pencil icon** to change fields (e.g., fix a typo in `id`).
+    -   **Delete**: Click the **Trash icon** to remove a document.
+
+### 🧭 Local Access (MongoDB Compass)
+1.  Download **MongoDB Compass**.
+2.  Paste your connection string from `.env` (`MONGODB_URI`).
+3.  Connect to browse data in a GUI.
+
 ### Seeding (Resetting DB)
 If you want to wipe the database and start fresh with default data:
 - **Notes**: Call `/api/seed` (or click "Seed" if available on empty state).
