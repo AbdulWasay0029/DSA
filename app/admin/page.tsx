@@ -1,110 +1,60 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import styles from './page.module.css';
-
-interface Suggestion {
-    suggestionId: string;
-    title: string;
-    originalId?: string;
-    submittedBy?: string;
-    submittedAt?: string;
-}
 
 export default function AdminDashboard() {
-    const { data: session, status } = useSession();
-    const router = useRouter();
-    const role = (session?.user as any)?.role || 'visitor';
-    const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        // Wait for session to load
-        if (status === 'loading') return;
-
-        if (role !== 'admin') {
-            router.push('/');
-            return;
-        }
-
-        const fetchSuggestions = async () => {
-            try {
-                const res = await fetch('/api/suggestions');
-                if (res.ok) {
-                    const data = await res.json();
-                    setSuggestions(data);
-                }
-            } catch (e) {
-                console.error('Failed to fetch suggestions:', e);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchSuggestions();
-    }, [role, router, status]);
-
-    if (status === 'loading' || loading) {
-        return (
-            <div className={styles.container}>
-                <div className="spinner"></div>
-            </div>
-        );
-    }
-
     return (
-        <div className={styles.container}>
-            <header className={styles.header}>
-                <div>
-                    <h1 className={styles.title}>Admin Dashboard</h1>
-                    <p className={styles.subtitle}>Review community contributions</p>
-                </div>
-                <Link href="/notes" className={styles.backBtn}>
-                    ← Back to Notes
-                </Link>
-            </header>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem', color: '#fff' }}>
+            <h1 style={{ marginBottom: '2rem' }}>🛠️ Admin Dashboard</h1>
 
-            {suggestions.length === 0 ? (
-                <div className={styles.emptyState}>
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M9 11l3 3L22 4" />
-                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-                    </svg>
-                    <h2>All caught up!</h2>
-                    <p>No pending suggestions to review.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                <Link href="/admin/notes" style={{ textDecoration: 'none' }}>
+                    <div style={{
+                        padding: '2rem',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '12px',
+                        transition: 'transform 0.2s',
+                        cursor: 'pointer'
+                    }}>
+                        <h2 style={{ color: '#4ade80', marginTop: 0 }}>🗂️ Note Manager</h2>
+                        <p style={{ color: '#aaa' }}>View all notes, inspect IDs, and manually delete broken or duplicate entries.</p>
+                    </div>
+                </Link>
+
+                <Link href="/notes/create" style={{ textDecoration: 'none' }}>
+                    <div style={{
+                        padding: '2rem',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '12px',
+                        transition: 'transform 0.2s',
+                        cursor: 'pointer'
+                    }}>
+                        <h2 style={{ color: '#f59e0b', marginTop: 0 }}>✏️ Create New Note</h2>
+                        <p style={{ color: '#aaa' }}>Add a new problem or article to the curriculum.</p>
+                    </div>
+                </Link>
+
+                <div
+                    onClick={() => {
+                        if (confirm('Are you sure? This will attempt to re-seed links from the JSON file.')) {
+                            fetch('/api/seed-links').then(res => res.json()).then(d => alert(d.message || d.error));
+                        }
+                    }}
+                    style={{
+                        padding: '2rem',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '12px',
+                        transition: 'transform 0.2s',
+                        cursor: 'pointer'
+                    }}
+                >
+                    <h2 style={{ color: '#ef4444', marginTop: 0 }}>🌱 Re-Seed Links</h2>
+                    <p style={{ color: '#aaa' }}>Force reset the Links library using the standard seed file.</p>
                 </div>
-            ) : (
-                <div className={styles.suggestionsList}>
-                    {suggestions.map((suggestion) => (
-                        <Link
-                            key={suggestion.suggestionId}
-                            href={`/admin/review/${suggestion.suggestionId}`}
-                            className={styles.suggestionCard}
-                        >
-                            <div className={styles.cardHeader}>
-                                <h3 className={styles.cardTitle}>{suggestion.title}</h3>
-                                <span className={`${styles.badge} ${suggestion.originalId ? styles.edit : styles.new}`}>
-                                    {suggestion.originalId ? 'Edit' : 'New'}
-                                </span>
-                            </div>
-                            <div className={styles.cardMeta}>
-                                <span>👤 {suggestion.submittedBy || 'Anonymous'}</span>
-                                {suggestion.submittedAt && (
-                                    <span>📅 {new Date(suggestion.submittedAt).toLocaleDateString()}</span>
-                                )}
-                            </div>
-                            <div className={styles.cardFooter}>
-                                <span className={styles.reviewLink}>
-                                    Review →
-                                </span>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-            )}
+            </div>
         </div>
     );
 }

@@ -26,20 +26,28 @@ export default function AdminNotesPage() {
     }, [role]);
 
     // Delete handler
-    const handleDelete = async (noteId: string) => {
-        if (!confirm(`Are you sure you want to delete note with ID: ${noteId}?`)) return;
+    const handleDelete = async (noteId?: string, mongoId?: string) => {
+        const idToDelete = (noteId && noteId !== 'undefined' && noteId !== 'null') ? noteId : mongoId;
+
+        if (!confirm(`Are you sure you want to delete note with ID: ${idToDelete}?`)) return;
 
         try {
-            const res = await fetch(`/api/notes?id=${noteId}`, {
+            // Include both id and _id in query if possible
+            const params = new URLSearchParams();
+            if (noteId) params.append('id', noteId);
+            if (mongoId) params.append('_id', mongoId);
+
+            const res = await fetch(`/api/notes?${params.toString()}`, {
                 method: 'DELETE',
             });
 
             if (res.ok) {
                 // Remove from local list
-                setNotes(prev => prev.filter(n => n.id !== noteId));
+                setNotes(prev => prev.filter(n => n.id !== noteId && n._id !== mongoId));
                 alert("Note deleted successfully!");
             } else {
-                alert("Failed to delete note.");
+                const err = await res.json();
+                alert("Failed to delete note: " + (err.error || 'Unknown error'));
             }
         } catch (error) {
             console.error(error);
@@ -97,7 +105,7 @@ export default function AdminNotesPage() {
                             </td>
                             <td style={{ padding: '1rem' }}>
                                 <button
-                                    onClick={() => handleDelete(note.id)}
+                                    onClick={() => handleDelete(note.id, note._id)}
                                     style={{
                                         background: 'rgba(239, 68, 68, 0.2)',
                                         color: '#ef4444',

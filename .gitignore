@@ -35,6 +35,12 @@ next-env.d.ts
 # private documentation
 TECHNICAL_DEEP_DIVE.md
 PROJECT_STRUCTURE.md
-data/notes.json
-data/links.json
-data/suggestions.json
+
+Notes_Images/
+AUDIT.md
+CONSISTENCY_FIXES_COMPLETE.md
+IMPLEMENTATION_PLAN.md
+PROJECT_STRUCTURE.md
+TECHNICAL_DEEP_DIVE.md
+temp_links_full.txt
+designflow.md

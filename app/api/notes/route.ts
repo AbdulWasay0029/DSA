@@ -64,32 +64,47 @@ export async function DELETE(request: Request) {
 
     await dbConnect();
 
-    // Try to get ID from Query String first
+    // Try to get ID or _id from Query String first
     const { searchParams } = new URL(request.url);
     let id = searchParams.get('id');
+    let _id = searchParams.get('_id');
 
     // Fallback to Body if no query param
-    if (!id) {
+    if (!id && !_id) {
         try {
             const body = await request.json();
             id = body.id;
+            _id = body._id;
         } catch (e) {
             // Body might be empty
         }
     }
 
-    if (!id) {
-        return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    if (!id && !_id) {
+        return NextResponse.json({ error: 'ID or _id is required' }, { status: 400 });
     }
 
     try {
-        const deleted = await NoteModel.findOneAndDelete({ id });
+        let deleted = null;
+
+        // 1. Try deleting by custom 'id' (slug)
+        if (id && id !== 'undefined' && id !== 'null') {
+            deleted = await NoteModel.findOneAndDelete({ id });
+        }
+
+        // 2. If not deleted yet, try deleting by MongoDB '_id'
+        if (!deleted && _id && _id !== 'undefined') {
+            deleted = await NoteModel.findByIdAndDelete(_id);
+        }
+
         if (!deleted) {
             return NextResponse.json({ error: 'Note not found' }, { status: 404 });
         }
-        return NextResponse.json({ success: true, deletedId: id });
-    } catch (e) {
-        return NextResponse.json({ error: 'Failed to delete note' }, { status: 500 });
+
+        return NextResponse.json({ success: true, deletedId: id || _id });
+    } catch (e: any) {
+        console.error("Delete Error:", e);
+        return NextResponse.json({ error: 'Failed to delete note: ' + e.message }, { status: 500 });
     }
 }
 
