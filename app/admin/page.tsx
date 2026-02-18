@@ -36,24 +36,7 @@ export default function AdminDashboard() {
                     </div>
                 </Link>
 
-                <div
-                    onClick={() => {
-                        if (confirm('Are you sure? This will attempt to re-seed links from the JSON file.')) {
-                            fetch('/api/seed-links').then(res => res.json()).then(d => alert(d.message || d.error));
-                        }
-                    }}
-                    style={{
-                        padding: '2rem',
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        borderRadius: '12px',
-                        transition: 'transform 0.2s',
-                        cursor: 'pointer'
-                    }}
-                >
-                    <h2 style={{ color: '#ef4444', marginTop: 0 }}>🌱 Re-Seed Links</h2>
-                    <p style={{ color: '#aaa' }}>Force reset the Links library using the standard seed file.</p>
-                </div>
+
             </div>
         </div>
     );
