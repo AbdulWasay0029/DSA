@@ -35,3 +35,6 @@ next-env.d.ts
 # private documentation
 TECHNICAL_DEEP_DIVE.md
 PROJECT_STRUCTURE.md
+data/notes.json
+data/links.json
+data/suggestions.json

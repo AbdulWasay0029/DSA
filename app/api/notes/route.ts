@@ -63,14 +63,31 @@ export async function DELETE(request: Request) {
     }
 
     await dbConnect();
-    const body = await request.json();
+
+    // Try to get ID from Query String first
+    const { searchParams } = new URL(request.url);
+    let id = searchParams.get('id');
+
+    // Fallback to Body if no query param
+    if (!id) {
+        try {
+            const body = await request.json();
+            id = body.id;
+        } catch (e) {
+            // Body might be empty
+        }
+    }
+
+    if (!id) {
+        return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    }
 
     try {
-        const deleted = await NoteModel.findOneAndDelete({ id: body.id });
+        const deleted = await NoteModel.findOneAndDelete({ id });
         if (!deleted) {
             return NextResponse.json({ error: 'Note not found' }, { status: 404 });
         }
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true, deletedId: id });
     } catch (e) {
         return NextResponse.json({ error: 'Failed to delete note' }, { status: 500 });
     }
