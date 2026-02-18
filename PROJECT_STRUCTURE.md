@@ -59,13 +59,10 @@ SmartInterviews/
 ├── lib/                            # Utility libraries
 │   ├── auth.ts                     # NextAuth configuration
 │   ├── db.ts                       # MongoDB connection
-│   └── models.ts                   # Mongoose schemas (Note, Suggestion, UserProgress)
+│   ├── models.ts                   # Mongoose schemas (Note, Suggestion, UserProgress)
+│   └── types.ts                    # Shared TypeScript interfaces (Note, LinkItem, Suggestion)
 │
-├── data/                           # Static data files
-│   ├── notes.ts                    # TypeScript types for notes
-│   ├── notes.json                  # Seed data for notes (if needed)
-│   ├── links.ts                    # Resource links data
-│   └── suggestions.json            # Suggestions storage (if not using DB)
+
 │
 ├── public/                         # Static assets (images, fonts, etc.)
 │
