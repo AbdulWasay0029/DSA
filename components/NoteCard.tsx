@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import styles from './NoteCard.module.css';
-import { Note } from '@/data/notes';
+import { Note } from '@/lib/types';
 
 export default function NoteCard({ note }: { note: Note }) {
     // Use difficulty field, fallback to tags if not set

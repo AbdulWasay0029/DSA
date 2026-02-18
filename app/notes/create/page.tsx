@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 import RichTextToolbar from '@/components/RichTextToolbar';
-import { Note } from '@/data/notes';
+import { Note } from '@/lib/types';
 
 export default function CreateNotePage() {
     const { data: session } = useSession();

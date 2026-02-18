@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import styles from '../../../notes/[id]/page.module.css'; // Reusing detail styles
-import { Suggestion } from '@/lib/storage';
+import { Suggestion } from '@/lib/types';
 import NoteDetailPage from '@/app/notes/[id]/page'; // HACK: We could reuse the component but logic differs. Let's rebuild for safety.
 import SimpleMarkdown from '@/components/SimpleMarkdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';

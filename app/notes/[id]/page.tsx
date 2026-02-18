@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 import SimpleMarkdown from '@/components/SimpleMarkdown';
 
-import { Note } from '@/data/notes';
+import { Note } from '@/lib/types';
 
 export default function NoteDetailPage({ params }: { params: { id: string } }) {
     const { data: session } = useSession();

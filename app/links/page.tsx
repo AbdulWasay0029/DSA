@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './page.module.css';
 import { useSession } from 'next-auth/react';
-import { LinkItem } from '@/lib/storage';
+import { LinkItem } from '@/lib/types';
 
 export default function LinksPage() {
     const { data: session } = useSession();

@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 import NoteCard from '@/components/NoteCard';
-import { Note } from '@/data/notes';
+import { Note } from '@/lib/types';
 
 function NotesPageContent() {
     const { data: session } = useSession();
